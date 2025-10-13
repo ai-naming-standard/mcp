@@ -1,8 +1,11 @@
 {
   "name": "ai-naming-standard-mcp",
-  "version": "1.0.1",
-  "description": "Official AI Naming Convention MCP Server - Standardized file naming for AI-driven development with multi-language support",
+  "version": "1.0.2",
+  "description": "Zero-Folderization: Revolutionary AI-human collaboration protocol that encodes complete context into filenames, eliminating folders. An operational pact between non-developers and AI for autonomous development.",
   "keywords": [
+    "zero-folderization",
+    "ai-human-collaboration",
+    "folder-less",
     "mcp",
     "mcp-server",
     "modelcontextprotocol",
@@ -18,7 +21,11 @@
     "microservices",
     "project-structure",
     "multi-language",
-    "i18n"
+    "i18n",
+    "self-documenting",
+    "knowledge-persistence",
+    "ai-readable",
+    "operational-pact"
   ],
   "homepage": "https://github.com/ai-naming-standard/mcp",
   "repository": {
