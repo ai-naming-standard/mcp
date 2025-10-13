@@ -1,0 +1,69 @@
+{
+  "name": "ai-naming-standard-mcp",
+  "version": "1.0.0",
+  "description": "Official AI Naming Convention MCP Server - Standardized file naming for AI-driven development with multi-language support",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "modelcontextprotocol",
+    "ai-naming-standard",
+    "naming-convention",
+    "file-naming",
+    "claude",
+    "claude-desktop",
+    "cursor",
+    "ai-development",
+    "coding-standards",
+    "automation",
+    "microservices",
+    "project-structure",
+    "multi-language",
+    "i18n"
+  ],
+  "homepage": "https://github.com/ai-naming-standard/mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ai-naming-standard/mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ai-naming-standard/mcp/issues"
+  },
+  "author": {
+    "name": "AI Naming Standard Organization",
+    "url": "https://github.com/ai-naming-standard"
+  },
+  "contributors": [
+    {
+      "name": "AI Naming Standard Contributors"
+    }
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "ai-naming-standard-mcp": "./bin/start.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node test-languages.js",
+    "prepublishOnly": "npm test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "mcp": {
+    "type": "server",
+    "protocol": "stdio",
+    "capabilities": [
+      "tools",
+      "resources"
+    ]
+  }
+}

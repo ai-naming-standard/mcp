@@ -1,0 +1,63 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.npm
+*.tgz
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+
+# IDE
+.vscode/
+.idea/
+*.iml
+*.sublime-workspace
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Testing
+coverage/
+.nyc_output/
+
+# Build
+dist/
+build/
+out/
+
+# Temporary
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Cache
+.cache/
+.parcel-cache/
+
+# Package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Development files
+*.local.js
+*.backup
+*.bak
+
+# Publishing files (keep in repo for users to download)
+# quick-install-windows.bat
+# quick-install-mac-linux.sh
+# publish-to-npm.bat
+# publish-to-npm.sh

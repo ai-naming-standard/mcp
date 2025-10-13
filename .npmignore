@@ -1,0 +1,58 @@
+# Development files
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Test files
+test/
+test-*.js
+*.test.js
+*.spec.js
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build files
+*.tgz
+dist/
+build/
+
+# Documentation files
+docs/
+*.md
+!README.md
+!LICENSE
+
+# Installation scripts (users will install via npm)
+install*.bat
+install*.sh
+set-language.bat
+set-language.sh
+install-from-github.sh
+install-all-tools.bat
+install-all-tools.sh
+
+# Git files
+.git/
+.gitignore
+.github/
+
+# Config files
+.env
+.env.*
+config.local.js
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Node modules (will be installed by npm)
+node_modules/
