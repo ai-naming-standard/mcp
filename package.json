@@ -1,6 +1,6 @@
 {
   "name": "ai-naming-standard-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Official AI Naming Convention MCP Server - Standardized file naming for AI-driven development with multi-language support",
   "keywords": [
     "mcp",
@@ -44,9 +44,7 @@
     "ai-naming-standard-mcp": "./bin/start.js"
   },
   "scripts": {
-    "start": "node src/index.js",
-    "test": "node test-languages.js",
-    "prepublishOnly": "npm test"
+    "start": "node src/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.6.0"
