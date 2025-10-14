@@ -1,4 +1,4 @@
-# 🤖 AI Naming Standard MCP Server
+# AI Naming Standard MCP Server
 
 [![npm version](https://img.shields.io/npm/v/ai-naming-standard-mcp.svg)](https://www.npmjs.com/package/ai-naming-standard-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -6,20 +6,20 @@
 
 > **Zero-Folderization**: A revolutionary naming convention that enables AI-human collaboration by encoding complete context into filenames, eliminating folder dependencies.
 
-## 🎯 The Philosophy of Zero-Folderization
+## The Philosophy of Zero-Folderization
 
 This naming convention is an **operational pact between non-developers and AI**, designed to enable AI to develop and operate autonomously according to a shared standard.
 
-### 🧠 Core Concept
+### Core Concept
 
 **Eliminate folders and encode hierarchy directly into filenames** — a structure language AI can read.
 
 ```
-❌ frontend/user/login/handler.js  
-✅ FE_User-Login_R_Handler_PROD.js
+[X] frontend/user/login/handler.js  
+[O] FE_User-Login_R_Handler_PROD.js
 ```
 
-### 💡 Why Zero-Folderization?
+### Why Zero-Folderization?
 
 Based on the principle of **Zero-Folderization**, AI can fully understand a file's:
 - **Location** - Where it belongs in the architecture
@@ -30,7 +30,7 @@ Based on the principle of **Zero-Folderization**, AI can fully understand a file
 
 All of this **without relying on folders** — purely through the filename itself.
 
-### 🔄 Paradigm Shift
+### Paradigm Shift
 
 | Aspect | Traditional (Human-Centric) | Zero-Folderization (AI-Based) |
 |--------|----------------------------|-------------------------------|
@@ -40,7 +40,7 @@ All of this **without relying on folders** — purely through the filename itsel
 | **Knowledge** | Person-dependent | Self-documenting |
 | **Collaboration** | Human-only | Shared AI+Human syntax |
 
-### 🎯 Strategic Value
+### Strategic Value
 
 1. **AI-Human Communication**: Non-developers can issue precise instructions to AI using natural language feature names
 2. **Knowledge Persistence**: Filenames serve as both documentation and architecture
@@ -48,7 +48,7 @@ All of this **without relying on folders** — purely through the filename itsel
 4. **Operational Efficiency**: +70% maintenance speed, -80% error rate
 5. **Instant Understanding**: New maintainers grasp the system within one day
 
-### 🌟 Real-World Example
+### Real-World Example
 
 A non-developer (planner, operator, or marketer) can say:
 ```
@@ -64,7 +64,7 @@ AI immediately understands:
 
 And can locate and update the correct file without human intervention.
 
-## 🚀 What is AI Naming Standard MCP?
+## What is AI Naming Standard MCP?
 
 The **AI Naming Standard MCP Server** implements this Zero-Folderization philosophy as a Model Context Protocol server, providing tools to:
 - Automatically generate standardized file names
@@ -72,13 +72,13 @@ The **AI Naming Standard MCP Server** implements this Zero-Folderization philoso
 - Bridge the communication gap between developers and non-developers
 - Enable AI to understand and operate on your codebase autonomously
 
-## 🌐 Multi-Language Support
+## Multi-Language Support
 
-- 🇺🇸 **English** (Default)
-- 🇰🇷 **한국어** (Korean)
-- 🇯🇵 **日本語** (Japanese)
+- **English** (Default)
+- **한국어** (Korean)
+- **日本語** (Japanese)
 
-## ⚡ Quick Start
+## Quick Start
 
 ### Install via NPM
 
@@ -106,7 +106,7 @@ Add to your Claude Desktop configuration:
 
 ### Restart Claude Desktop
 
-## 📖 Core Principles
+## Core Principles
 
 ### 1. **Flat-First & Folder-Zero**
 Eliminate folders; embed hierarchy within filenames.
@@ -126,7 +126,7 @@ Security level, version, and environment are explicit in names.
 ### 6. **Non-breaking Evolution**
 Decimal indices and `_Deprecated` tags ensure safe iteration.
 
-## 🛠️ Available Tools
+## Available Tools
 
 ### Core Tools
 - **generateFileName** - Generate standardized file names with AI-readable structure
@@ -138,7 +138,7 @@ Decimal indices and `_Deprecated` tags ensure safe iteration.
 - **batchGenerateFileNames** - Generate multiple files at once
 - **suggestCorrection** - Get correction suggestions for invalid names
 
-## 📐 Naming Convention Structure
+## Naming Convention Structure
 
 ### Pattern
 ```
@@ -172,7 +172,7 @@ Decimal indices and `_Deprecated` tags ensure safe iteration.
 | **Detail** | File purpose | `Handler`, `Service`, `Config` |
 | **Env** | Environment | `DEV`, `STG`, `PROD`, `COMMON` |
 
-## 🔄 Benefits Over Traditional Approaches
+## Benefits Over Traditional Approaches
 
 ### Traditional Folder Structure Problems
 - **Human-Centered**: Only humans understand folder structures
@@ -186,7 +186,7 @@ Decimal indices and `_Deprecated` tags ensure safe iteration.
 - **Knowledge Persistent**: Information survives personnel changes
 - **Universal Language**: Both AI and humans can understand
 
-## 📊 Organizational ROI
+## Organizational ROI
 
 - **70%** faster maintenance speed
 - **80%** reduction in error rate
@@ -194,7 +194,7 @@ Decimal indices and `_Deprecated` tags ensure safe iteration.
 - **100%** knowledge retention despite turnover
 - **Direct** non-developer to AI communication
 
-## 🌍 Use Cases
+## Use Cases
 
 ### For Developers
 - Instant file purpose identification
@@ -214,7 +214,7 @@ Decimal indices and `_Deprecated` tags ensure safe iteration.
 - Enable cross-functional collaboration
 - Accelerate development cycles
 
-## 🔧 Advanced Features
+## Advanced Features
 
 ### Batch Operations
 Generate multiple files for entire microservices:
@@ -245,19 +245,19 @@ validateFileName('frontend/user/login.js')
 // Returns: Invalid - suggests: "01_FE_User-Login_R_Handler_DEV.js"
 ```
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
-## 📄 License
+## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 This project implements the Zero-Folderization philosophy, creating a shared language for AI-human collaboration in software development.
 
-## 📞 Support
+## Support
 
 - **Issues**: [GitHub Issues](https://github.com/leipokr/ai-naming-standard-mcp/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/leipokr/ai-naming-standard-mcp/discussions)
