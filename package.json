@@ -1,7 +1,7 @@
 {
   "name": "ai-naming-standard-mcp",
-  "version": "1.0.3",
-  "description": "🤖 Zero-Folderization MCP: Revolutionary naming convention enabling AI-human collaboration by encoding complete context into filenames, eliminating folder dependencies. AI can read filenames as grammar; non-developers use them as instruction language. Operational pact for autonomous development with 70% faster maintenance and 80% error reduction.",
+  "version": "1.0.4",
+  "description": "Zero-Folderization MCP: Revolutionary naming convention enabling AI-human collaboration by encoding complete context into filenames, eliminating folder dependencies. AI can read filenames as grammar; non-developers use them as instruction language. Operational pact for autonomous development with 70% faster maintenance and 80% error reduction.",
   "keywords": [
     "zero-folderization",
     "ai-human-collaboration",
