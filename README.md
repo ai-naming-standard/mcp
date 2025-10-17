@@ -10,7 +10,7 @@
 
 **AI Naming Standard MCP** is a revolutionary file naming and project structure standard designed for multi-AI collaboration. It enables Cursor, Claude, ChatGPT, Windsurf, and other AI tools to work together seamlessly, with natural language support, automatic dependency tracking, and complete governance.
 
-**🌐 Language**: **English** | [한국어](./README_KO.md) | [日本語](./README_JA.md) | [中文](./README_CN.md)
+**🌐 Documentation**: [English](https://github.com/ai-naming-standard/mcp/tree/main/docs/EN) | [한국어](https://github.com/ai-naming-standard/mcp/tree/main/docs/KR) | [日本語](https://github.com/ai-naming-standard/mcp/tree/main/docs/JP) | [中文](https://github.com/ai-naming-standard/mcp/tree/main/docs/CN)
 
 ---
 
