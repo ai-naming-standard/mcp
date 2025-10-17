@@ -485,10 +485,10 @@ my-project/
 
 | Language | Status | Naming Wizard | Documentation |
 |----------|--------|---------------|---------------|
-| English | ✅ Full | 🚧 In Progress | ✅ Complete |
+| English | ✅ Full | ✅ Supported | ✅ Complete |
 | 한국어 (Korean) | ✅ Full | ✅ Supported | ✅ Complete |
-| 日本語 (Japanese) | ✅ Full | 🚧 In Progress | 🚧 Partial |
-| 中文 (Chinese) | 🚧 Planned | 🚧 Planned | 🚧 Planned |
+| 日本語 (Japanese) | ✅ Full | ✅ Supported | ✅ Complete |
+| 中文 (Chinese) | ✅ Full | ✅ Supported | ✅ Complete |
 
 ---
 
@@ -628,7 +628,7 @@ v6.0.0 was made possible by:
 | **MCP Tools** | 24 |
 | **Folders** | 8 (including 07_META) |
 | **Supported AIs** | 4 (Cursor, Claude, ChatGPT, Windsurf) |
-| **Languages** | 3 (EN, KO, JA) |
+| **Languages** | 4 (EN, KO, JA, CN) |
 | **Downloads** | [![npm](https://img.shields.io/npm/dt/ai-naming-standard-mcp.svg)](https://www.npmjs.com/package/ai-naming-standard-mcp) |
 | **Stars** | [![GitHub stars](https://img.shields.io/github/stars/ai-naming-standard/v6.svg)](https://github.com/ai-naming-standard/v6) |
 | **Contributors** | [![Contributors](https://img.shields.io/github/contributors/ai-naming-standard/v6.svg)](https://github.com/ai-naming-standard/v6/graphs/contributors) |
