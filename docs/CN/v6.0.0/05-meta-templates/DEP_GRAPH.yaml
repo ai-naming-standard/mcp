@@ -1,0 +1,270 @@
+# 의존성 그래프
+# 위치: 07_META/DEP_GRAPH.yaml
+# 용도: 파일 간 의존성 관계를 자동으로 추적 및 시각화
+# 생성: AI가 @deps 태그를 스캔하여 자동 생성
+
+version: "6.0.0"
+generated: "2025-10-17T10:00:00Z"
+auto_update: true
+project_name: "your-project-name"
+
+# ============================================
+# 의존성 정의
+# ============================================
+
+dependencies:
+  # === Frontend ===
+  "001_FE_User-Login_C_Page_PROD.jsx":
+    depends_on:
+      - "101_BE_Auth-JWT_C_Service_PROD.py"
+    depended_by: []
+    type: "page"
+    layer: "FE"
+    critical: true
+    description: "사용자 로그인 페이지"
+    last_modified: "2025-10-17"
+
+  "002_FE_User-Register_C_Page_PROD.jsx":
+    depends_on:
+      - "102_BE_User-Register_C_API_PROD.py"
+      - "103_BE_User-Validate_V_Service_PROD.py"
+    depended_by: []
+    type: "page"
+    layer: "FE"
+    critical: true
+    description: "회원가입 페이지"
+    last_modified: "2025-10-17"
+
+  # === Backend ===
+  "101_BE_Auth-JWT_C_Service_PROD.py":
+    depends_on:
+      - "201_DB_User_C_Table_PROD.sql"
+    depended_by:
+      - "001_FE_User-Login_C_Page_PROD.jsx"
+      - "104_BE_Auth-Validate_V_Middleware_PROD.py"
+    type: "service"
+    layer: "BE"
+    critical: true
+    description: "JWT 토큰 생성 서비스"
+    last_modified: "2025-10-17"
+
+  "102_BE_User-Register_C_API_PROD.py":
+    depends_on:
+      - "103_BE_User-Validate_V_Service_PROD.py"
+      - "201_DB_User_C_Table_PROD.sql"
+    depended_by:
+      - "002_FE_User-Register_C_Page_PROD.jsx"
+    type: "api"
+    layer: "BE"
+    critical: true
+    description: "회원가입 API 엔드포인트"
+    last_modified: "2025-10-17"
+
+  "103_BE_User-Validate_V_Service_PROD.py":
+    depends_on: []
+    depended_by:
+      - "102_BE_User-Register_C_API_PROD.py"
+      - "002_FE_User-Register_C_Page_PROD.jsx"
+    type: "service"
+    layer: "BE"
+    critical: false
+    description: "사용자 입력 검증 서비스"
+    last_modified: "2025-10-17"
+
+  "104_BE_Auth-Validate_V_Middleware_PROD.py":
+    depends_on:
+      - "101_BE_Auth-JWT_C_Service_PROD.py"
+    depended_by:
+      - "105_BE_Product-Search_R_API_PROD.py"
+      - "106_BE_Order-Create_C_Service_PROD.py"
+    type: "middleware"
+    layer: "BE"
+    critical: true
+    description: "인증 미들웨어"
+    last_modified: "2025-10-17"
+
+  # === Database ===
+  "201_DB_User_C_Table_PROD.sql":
+    depends_on: []
+    depended_by:
+      - "101_BE_Auth-JWT_C_Service_PROD.py"
+      - "102_BE_User-Register_C_API_PROD.py"
+      - "202_DB_Order_C_Table_PROD.sql"
+    type: "schema"
+    layer: "DB"
+    critical: true
+    description: "사용자 테이블 스키마"
+    last_modified: "2025-10-17"
+
+  "202_DB_Order_C_Table_PROD.sql":
+    depends_on:
+      - "201_DB_User_C_Table_PROD.sql"
+      - "203_DB_Product_C_Table_PROD.sql"
+    depended_by:
+      - "106_BE_Order-Create_C_Service_PROD.py"
+    type: "schema"
+    layer: "DB"
+    critical: true
+    description: "주문 테이블 스키마"
+    last_modified: "2025-10-17"
+
+# ============================================
+# 의존성 통계
+# ============================================
+
+statistics:
+  total_files: 8
+  total_dependencies: 15
+  circular_dependencies: 0
+  orphan_files: 0
+  most_depended:
+    - file: "201_DB_User_C_Table_PROD.sql"
+      count: 3
+    - file: "101_BE_Auth-JWT_C_Service_PROD.py"
+      count: 2
+  most_depending:
+    - file: "002_FE_User-Register_C_Page_PROD.jsx"
+      count: 2
+    - file: "102_BE_User-Register_C_API_PROD.py"
+      count: 2
+  critical_files: 6
+  layers:
+    FE: 2
+    BE: 4
+    DB: 2
+
+# ============================================
+# 순환 참조 체크
+# ============================================
+
+circular_check:
+  enabled: true
+  last_check: "2025-10-17T10:00:00Z"
+  status: "clean"
+  detected: []
+
+# ============================================
+# 영향 범위 분석
+# ============================================
+
+impact_analysis:
+  # 파일 수정 시 영향받는 파일들
+  "201_DB_User_C_Table_PROD.sql":
+    direct_impact:
+      - "101_BE_Auth-JWT_C_Service_PROD.py"
+      - "102_BE_User-Register_C_API_PROD.py"
+      - "202_DB_Order_C_Table_PROD.sql"
+    indirect_impact:
+      - "001_FE_User-Login_C_Page_PROD.jsx"
+      - "002_FE_User-Register_C_Page_PROD.jsx"
+      - "104_BE_Auth-Validate_V_Middleware_PROD.py"
+    total_impact: 6
+    risk_level: "high"
+
+  "103_BE_User-Validate_V_Service_PROD.py":
+    direct_impact:
+      - "102_BE_User-Register_C_API_PROD.py"
+    indirect_impact:
+      - "002_FE_User-Register_C_Page_PROD.jsx"
+    total_impact: 2
+    risk_level: "low"
+
+# ============================================
+# 의존성 레이어 분석
+# ============================================
+
+layer_analysis:
+  # 레이어 간 의존 관계 (정상적인 흐름)
+  valid_dependencies:
+    FE_to_BE: 3
+    BE_to_DB: 4
+    BE_to_BE: 2
+  
+  # 비정상적 의존 관계 (경고)
+  invalid_dependencies:
+    FE_to_DB: 0  # Frontend가 DB에 직접 접근하면 안됨
+    DB_to_BE: 0  # DB가 Backend에 의존하면 안됨
+    DB_to_FE: 0  # DB가 Frontend에 의존하면 안됨
+  
+  health_status: "healthy"
+
+# ============================================
+# Mermaid 다이어그램 (자동 생성)
+# ============================================
+
+mermaid_diagram: |
+  graph TD
+      FE_001[001_FE_User-Login] --> BE_101[101_BE_Auth-JWT]
+      FE_002[002_FE_User-Register] --> BE_102[102_BE_User-Register]
+      FE_002 --> BE_103[103_BE_User-Validate]
+      
+      BE_101 --> DB_201[201_DB_User]
+      BE_102 --> BE_103
+      BE_102 --> DB_201
+      BE_104[104_BE_Auth-Validate] --> BE_101
+      
+      DB_202[202_DB_Order] --> DB_201
+      DB_202 --> DB_203[203_DB_Product]
+      
+      style DB_201 fill:#f96,stroke:#333,stroke-width:2px
+      style BE_101 fill:#9f6,stroke:#333,stroke-width:2px
+
+# ============================================
+# 자동 업데이트 설정
+# ============================================
+
+auto_update_settings:
+  enabled: true
+  trigger: "on_file_save"  # on_file_save, on_commit, manual
+  scan_folders:
+    - "03_ACTIVE"
+  scan_pattern: "@deps:"
+  update_frequency: "real-time"  # real-time, hourly, daily
+  backup_before_update: true
+
+# ============================================
+# 경고 및 알림
+# ============================================
+
+warnings:
+  - type: "missing_deps"
+    message: "다음 파일들에 @deps 태그가 없습니다"
+    files: []
+  
+  - type: "orphan_file"
+    message: "다음 파일들은 어떤 파일에도 의존하지 않고, 다른 파일도 의존하지 않습니다"
+    files: []
+  
+  - type: "circular_dependency"
+    message: "순환 참조가 감지되었습니다"
+    cycles: []
+
+# ============================================
+# 사용 방법
+# ============================================
+
+# 1. 자동 생성:
+#    ainaming scan --generate-deps
+#
+# 2. 수동 업데이트:
+#    ainaming deps --update
+#
+# 3. 시각화:
+#    ainaming deps --visualize
+#
+# 4. 영향 분석:
+#    ainaming deps --impact 201_DB_User_C_Table_PROD.sql
+#
+# 5. 순환 참조 체크:
+#    ainaming deps --check-circular
+
+# ============================================
+# 메타데이터
+# ============================================
+
+metadata:
+  schema_version: "1.0"
+  generator: "ainaming-cli v6.0.0"
+  last_validator: "claude"
+  validation_status: "passed"
+  validation_date: "2025-10-17T10:00:00Z"

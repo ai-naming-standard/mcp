@@ -1,0 +1,392 @@
+# Naming Wizard 규칙
+# 위치: 07_META/NAMING_WIZARD_RULES.yaml
+# 용도: 자연어를 파일명으로 자동 변환하는 규칙 정의
+
+version: "6.0.0"
+updated: "2025-10-17"
+language: "ko"  # ko, en, ja, zh 지원 예정
+
+# ============================================
+# 도메인 매핑 (Domain Mapping)
+# ============================================
+
+domainMapping:
+  # === 사용자 관련 ===
+  - keywords: ["로그인", "login", "signin", "인증", "auth", "authentication"]
+    domain: "User-Login"
+    layer_hint: "FE + BE"
+  
+  - keywords: ["회원가입", "가입", "register", "signup", "등록"]
+    domain: "User-Register"
+    layer_hint: "FE + BE + DB"
+  
+  - keywords: ["프로필", "profile", "내정보", "my info", "계정"]
+    domain: "User-Profile"
+    layer_hint: "FE + BE"
+  
+  - keywords: ["비밀번호", "password", "pwd", "암호"]
+    domain: "User-Password"
+    layer_hint: "BE"
+  
+  - keywords: ["로그아웃", "logout", "signout"]
+    domain: "User-Logout"
+    layer_hint: "FE + BE"
+
+  # === 상품 관련 ===
+  - keywords: ["상품", "제품", "product", "item", "goods"]
+    domain: "Product"
+    layer_hint: "all"
+  
+  - keywords: ["검색", "search", "찾기", "find", "조회"]
+    feature: "Search"
+    detail_hint: "API"
+  
+  - keywords: ["목록", "리스트", "list", "listings"]
+    feature: "List"
+    detail_hint: "Page"
+  
+  - keywords: ["상세", "detail", "details", "정보"]
+    feature: "Detail"
+    detail_hint: "Page"
+  
+  - keywords: ["카테고리", "category", "분류"]
+    feature: "Category"
+    detail_hint: "Component"
+
+  # === 주문 관련 ===
+  - keywords: ["주문", "order", "ordering", "구매", "purchase"]
+    domain: "Order"
+    layer_hint: "all"
+  
+  - keywords: ["장바구니", "cart", "카트", "basket"]
+    domain: "Cart"
+    layer_hint: "FE + BE"
+  
+  - keywords: ["결제", "checkout", "payment", "pay", "지불"]
+    domain: "Payment"
+    layer_hint: "all"
+  
+  - keywords: ["취소", "cancel", "환불", "refund"]
+    feature: "Refund"
+    detail_hint: "Service"
+  
+  - keywords: ["배송", "delivery", "shipping", "배달"]
+    feature: "Delivery"
+    detail_hint: "Service"
+
+  # === 리뷰 관련 ===
+  - keywords: ["리뷰", "review", "평가", "rating"]
+    domain: "Review"
+    layer_hint: "FE + BE + DB"
+  
+  - keywords: ["댓글", "comment", "의견"]
+    domain: "Comment"
+    layer_hint: "FE + BE"
+
+  # === 관리자 관련 ===
+  - keywords: ["관리", "admin", "manage", "management"]
+    domain: "Admin"
+    layer_hint: "FE + BE"
+  
+  - keywords: ["대시보드", "dashboard", "홈"]
+    feature: "Dashboard"
+    detail_hint: "Page"
+  
+  - keywords: ["통계", "analytics", "stats", "분석"]
+    feature: "Analytics"
+    detail_hint: "Page"
+
+# ============================================
+# 액션 매핑 (Action Mapping)
+# ============================================
+
+actionMapping:
+  # Create
+  - keywords: ["만들", "만드", "생성", "추가", "등록", "작성", "create", "add", "new", "insert", "write"]
+    action: "C"
+    detail_hint: "Service"
+  
+  # Read
+  - keywords: ["조회", "보기", "검색", "찾기", "가져오", "읽", "read", "get", "view", "fetch", "find", "show", "display"]
+    action: "R"
+    detail_hint: "API"
+  
+  # Update
+  - keywords: ["수정", "변경", "업데이트", "편집", "바꾸", "갱신", "update", "edit", "modify", "change", "alter"]
+    action: "U"
+    detail_hint: "Service"
+  
+  # Delete
+  - keywords: ["삭제", "제거", "지우", "없애", "delete", "remove", "erase", "drop"]
+    action: "D"
+    detail_hint: "Service"
+  
+  # Validate
+  - keywords: ["검증", "확인", "체크", "유효성", "validate", "check", "verify"]
+    action: "V"
+    detail_hint: "Validator"
+  
+  # Execute
+  - keywords: ["실행", "처리", "진행", "수행", "execute", "process", "run", "perform"]
+    action: "X"
+    detail_hint: "Service"
+  
+  # Send
+  - keywords: ["전송", "발송", "보내", "송신", "send", "transmit", "dispatch", "submit"]
+    action: "S"
+    detail_hint: "Service"
+  
+  # Transform
+  - keywords: ["변환", "전환", "변경", "transform", "convert", "change", "translate"]
+    action: "T"
+    detail_hint: "Helper"
+  
+  # Generate
+  - keywords: ["생성", "만들", "발급", "출력", "generate", "create", "produce", "make"]
+    action: "G"
+    detail_hint: "Helper"
+
+# ============================================
+# 레이어 매핑 (Layer Mapping)
+# ============================================
+
+layerMapping:
+  # Frontend
+  - keywords: ["프론트", "프런트", "화면", "UI", "페이지", "컴포넌트", 
+              "react", "vue", "angular", "frontend", "client", "view"]
+    layer: "FE"
+  
+  # Backend
+  - keywords: ["백엔드", "백앤드", "서버", "API", "비즈니스", "로직",
+              "node", "python", "java", "spring", "django", "backend", "server"]
+    layer: "BE"
+  
+  # Database
+  - keywords: ["데이터베이스", "DB", "디비", "테이블", "스키마", "쿼리",
+              "mysql", "mongo", "postgres", "database", "sql"]
+    layer: "DB"
+  
+  # API Gateway
+  - keywords: ["게이트웨이", "gateway", "api", "rest", "graphql", "endpoint"]
+    layer: "API"
+  
+  # Machine Learning
+  - keywords: ["머신러닝", "ML", "AI", "인공지능", "모델", "학습",
+              "tensorflow", "pytorch", "ml", "ai"]
+    layer: "ML"
+  
+  # Infrastructure
+  - keywords: ["인프라", "인프라스트럭처", "배포", "도커", "쿠버네티스",
+              "infra", "docker", "k8s", "kubernetes", "deploy"]
+    layer: "INFRA"
+  
+  # Shared
+  - keywords: ["공통", "공유", "유틸", "헬퍼", "shared", "common", "util", "helper"]
+    layer: "SH"
+
+# ============================================
+# 세부사항 매핑 (Detail Mapping)
+# ============================================
+
+detailMapping:
+  # UI 관련
+  - keywords: ["페이지", "화면", "뷰", "page", "view", "screen"]
+    detail: "Page"
+    layer_compatible: ["FE"]
+  
+  - keywords: ["컴포넌트", "component", "widget", "부품"]
+    detail: "Component"
+    layer_compatible: ["FE"]
+  
+  - keywords: ["레이아웃", "layout", "템플릿", "template"]
+    detail: "Layout"
+    layer_compatible: ["FE"]
+  
+  - keywords: ["모달", "팝업", "modal", "popup", "dialog"]
+    detail: "Modal"
+    layer_compatible: ["FE"]
+
+  # Backend 관련
+  - keywords: ["서비스", "비즈니스", "service", "business"]
+    detail: "Service"
+    layer_compatible: ["BE"]
+  
+  - keywords: ["컨트롤러", "controller", "handler", "라우터", "router"]
+    detail: "Controller"
+    layer_compatible: ["BE", "API"]
+  
+  - keywords: ["리포지토리", "repository", "DAO", "데이터"]
+    detail: "Repository"
+    layer_compatible: ["BE"]
+  
+  - keywords: ["미들웨어", "middleware", "interceptor"]
+    detail: "Middleware"
+    layer_compatible: ["BE", "API"]
+  
+  - keywords: ["헬퍼", "유틸", "helper", "util", "utility"]
+    detail: "Helper"
+    layer_compatible: ["BE", "SH"]
+  
+  - keywords: ["검증", "유효성", "validator", "validation"]
+    detail: "Validator"
+    layer_compatible: ["BE"]
+  
+  - keywords: ["매퍼", "mapper", "converter", "변환"]
+    detail: "Mapper"
+    layer_compatible: ["BE"]
+
+  # API 관련
+  - keywords: ["API", "엔드포인트", "endpoint", "라우트", "route"]
+    detail: "API"
+    layer_compatible: ["BE", "API"]
+
+  # Database 관련
+  - keywords: ["테이블", "table", "스키마", "schema"]
+    detail: "Table"
+    layer_compatible: ["DB"]
+  
+  - keywords: ["마이그레이션", "migration", "DDL"]
+    detail: "Migration"
+    layer_compatible: ["DB"]
+  
+  - keywords: ["쿼리", "query", "SQL"]
+    detail: "Query"
+    layer_compatible: ["DB"]
+
+# ============================================
+# 환경 매핑 (Environment Mapping)
+# ============================================
+
+envMapping:
+  - keywords: ["개발", "dev", "development", "로컬", "local"]
+    env: "DEV"
+  
+  - keywords: ["테스트", "test", "testing", "스테이징", "staging", "stg"]
+    env: "STG"
+  
+  - keywords: ["운영", "prod", "production", "배포", "deploy", "live"]
+    env: "PROD"
+  
+  - keywords: ["공통", "common", "모든", "all", "전체"]
+    env: "COMMON"
+  
+  - default: "PROD"  # 기본값
+
+# ============================================
+# 복합 패턴 (Complex Patterns)
+# ============================================
+
+complexPatterns:
+  # "회원가입 페이지"
+  - input_pattern: ["회원가입", "페이지"]
+    output:
+      domain: "User-Register"
+      action: "C"
+      layer: "FE"
+      detail: "Page"
+      env: "PROD"
+  
+  # "상품 검색 API"
+  - input_pattern: ["상품", "검색", "API"]
+    output:
+      domain: "Product-Search"
+      action: "R"
+      layer: "BE"
+      detail: "API"
+      env: "PROD"
+  
+  # "주문 처리 서비스"
+  - input_pattern: ["주문", "처리", "서비스"]
+    output:
+      domain: "Order-Process"
+      action: "X"
+      layer: "BE"
+      detail: "Service"
+      env: "PROD"
+
+# ============================================
+# 순번 자동 할당 규칙
+# ============================================
+
+indexAssignment:
+  # 레이어별 시작 번호
+  layer_ranges:
+    FE: 
+      start: 1
+      increment: 1
+    BE: 
+      start: 100
+      increment: 1
+    DB: 
+      start: 200
+      increment: 1
+    API: 
+      start: 300
+      increment: 1
+    ML: 
+      start: 400
+      increment: 1
+    INFRA: 
+      start: 500
+      increment: 1
+    SH: 
+      start: 600
+      increment: 1
+  
+  # 자동 할당 전략
+  strategy: "auto"  # auto, manual, sequential
+  
+  # 충돌 시 처리
+  on_conflict: "suggest_alternative"  # suggest_alternative, increment, ask_user
+
+# ============================================
+# 사용 예시
+# ============================================
+
+examples:
+  - input: "로그인 페이지 만들어줘"
+    analysis:
+      domain: "User-Login"
+      action: "C"
+      layer: "FE"
+      detail: "Page"
+      env: "PROD"
+    output: "001_FE_User-Login_C_Page_PROD.jsx"
+  
+  - input: "결제 취소 기능 추가"
+    analysis:
+      domain: "Payment-Refund"
+      action: "C"
+      layer: "BE"
+      detail: "Service"
+      env: "PROD"
+    output: "101_BE_Payment-Refund_C_Service_PROD.py"
+  
+  - input: "상품 검색 React 컴포넌트"
+    analysis:
+      domain: "Product-Search"
+      action: "R"
+      layer: "FE"
+      detail: "Component"
+      env: "PROD"
+    output: "002_FE_Product-Search_R_Component_PROD.jsx"
+  
+  - input: "주문 테이블 생성"
+    analysis:
+      domain: "Order"
+      action: "C"
+      layer: "DB"
+      detail: "Table"
+      env: "COMMON"
+    output: "201_DB_Order_C_Table_COMMON.sql"
+
+# ============================================
+# 커스텀 규칙 추가
+# ============================================
+
+# 프로젝트별로 커스텀 규칙을 추가할 수 있습니다.
+# 예시:
+# customDomains:
+#   - keywords: ["예약", "reservation", "booking"]
+#     domain: "Reservation"
+#     layer_hint: "all"
