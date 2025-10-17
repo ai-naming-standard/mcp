@@ -1,5 +1,8 @@
 // English messages
 export const messages = {
+  // Version info
+  version: '5.0',
+  architecture: 'Smart-Folderization',
   // Tool descriptions
   tools: {
     generateFileName: {
@@ -203,8 +206,39 @@ export const messages = {
 
   // Server messages
   server: {
-    started: 'AI Naming Standard MCP Server started successfully',
+    started: 'AI Naming Standard MCP Server v5.0 (Smart-Folderization) started successfully',
     error: 'Error'
+  },
+
+  // v5 specific messages
+  v5: {
+    projectCreated: 'Project structure created with 7 standard folders',
+    folderSuggested: 'Folder suggested based on file analysis',
+    migrationPlan: 'Migration plan from v4 to v5 created (dry run)',
+    migrationExecuted: 'Migration to v5 executed successfully',
+    smartFolderization: 'Smart-Folderization: Minimal folders, maximum context in filenames'
+  },
+
+  // Folder descriptions
+  folders: {
+    '00_DOCS': 'Documentation (AI read-only)',
+    '01_CONFIG': 'Configuration (AI no-modify)',
+    '02_STATIC': 'Static resources (AI read-add)',
+    '03_ACTIVE': 'Active code (AI full-access)',
+    '04_TEST': 'Tests (AI create-modify)',
+    '05_BUILD': 'Build output (AI create-only)',
+    '06_LOGS': 'Logs (AI write-only)'
+  },
+
+  // AI Permissions
+  aiPermissions: {
+    'read-only': 'Can only read files',
+    'no-modify': 'Cannot modify files',
+    'read-add': 'Can read and add new files',
+    'full-access': 'Full access to all operations',
+    'create-modify': 'Can create and modify files',
+    'create-only': 'Can only create new files',
+    'write-only': 'Can only write/append to files'
   }
 };
 

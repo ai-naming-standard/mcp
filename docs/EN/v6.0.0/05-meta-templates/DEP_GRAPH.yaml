@@ -1,0 +1,270 @@
+# Dependency Graph
+# Location: 07_META/DEP_GRAPH.yaml
+# Purpose: Automatically track and visualize inter-file dependencies
+# Generated: AI automatically generates by scanning @deps tags
+
+version: "6.0.0"
+generated: "2025-10-17T10:00:00Z"
+auto_update: true
+project_name: "your-project-name"
+
+# ============================================
+# Dependency Definitions
+# ============================================
+
+dependencies:
+  # === Frontend ===
+  "001_FE_User-Login_C_Page_PROD.jsx":
+    depends_on:
+      - "101_BE_Auth-JWT_C_Service_PROD.py"
+    depended_by: []
+    type: "page"
+    layer: "FE"
+    critical: true
+    description: "User login page"
+    last_modified: "2025-10-17"
+
+  "002_FE_User-Register_C_Page_PROD.jsx":
+    depends_on:
+      - "102_BE_User-Register_C_API_PROD.py"
+      - "103_BE_User-Validate_V_Service_PROD.py"
+    depended_by: []
+    type: "page"
+    layer: "FE"
+    critical: true
+    description: "User registration page"
+    last_modified: "2025-10-17"
+
+  # === Backend ===
+  "101_BE_Auth-JWT_C_Service_PROD.py":
+    depends_on:
+      - "201_DB_User_C_Table_PROD.sql"
+    depended_by:
+      - "001_FE_User-Login_C_Page_PROD.jsx"
+      - "104_BE_Auth-Validate_V_Middleware_PROD.py"
+    type: "service"
+    layer: "BE"
+    critical: true
+    description: "JWT token generation service"
+    last_modified: "2025-10-17"
+
+  "102_BE_User-Register_C_API_PROD.py":
+    depends_on:
+      - "103_BE_User-Validate_V_Service_PROD.py"
+      - "201_DB_User_C_Table_PROD.sql"
+    depended_by:
+      - "002_FE_User-Register_C_Page_PROD.jsx"
+    type: "api"
+    layer: "BE"
+    critical: true
+    description: "User registration API endpoint"
+    last_modified: "2025-10-17"
+
+  "103_BE_User-Validate_V_Service_PROD.py":
+    depends_on: []
+    depended_by:
+      - "102_BE_User-Register_C_API_PROD.py"
+      - "002_FE_User-Register_C_Page_PROD.jsx"
+    type: "service"
+    layer: "BE"
+    critical: false
+    description: "User input validation service"
+    last_modified: "2025-10-17"
+
+  "104_BE_Auth-Validate_V_Middleware_PROD.py":
+    depends_on:
+      - "101_BE_Auth-JWT_C_Service_PROD.py"
+    depended_by:
+      - "105_BE_Product-Search_R_API_PROD.py"
+      - "106_BE_Order-Create_C_Service_PROD.py"
+    type: "middleware"
+    layer: "BE"
+    critical: true
+    description: "Authentication middleware"
+    last_modified: "2025-10-17"
+
+  # === Database ===
+  "201_DB_User_C_Table_PROD.sql":
+    depends_on: []
+    depended_by:
+      - "101_BE_Auth-JWT_C_Service_PROD.py"
+      - "102_BE_User-Register_C_API_PROD.py"
+      - "202_DB_Order_C_Table_PROD.sql"
+    type: "schema"
+    layer: "DB"
+    critical: true
+    description: "User table schema"
+    last_modified: "2025-10-17"
+
+  "202_DB_Order_C_Table_PROD.sql":
+    depends_on:
+      - "201_DB_User_C_Table_PROD.sql"
+      - "203_DB_Product_C_Table_PROD.sql"
+    depended_by:
+      - "106_BE_Order-Create_C_Service_PROD.py"
+    type: "schema"
+    layer: "DB"
+    critical: true
+    description: "Order table schema"
+    last_modified: "2025-10-17"
+
+# ============================================
+# Dependency Statistics
+# ============================================
+
+statistics:
+  total_files: 8
+  total_dependencies: 15
+  circular_dependencies: 0
+  orphan_files: 0
+  most_depended:
+    - file: "201_DB_User_C_Table_PROD.sql"
+      count: 3
+    - file: "101_BE_Auth-JWT_C_Service_PROD.py"
+      count: 2
+  most_depending:
+    - file: "002_FE_User-Register_C_Page_PROD.jsx"
+      count: 2
+    - file: "102_BE_User-Register_C_API_PROD.py"
+      count: 2
+  critical_files: 6
+  layers:
+    FE: 2
+    BE: 4
+    DB: 2
+
+# ============================================
+# Circular Dependency Check
+# ============================================
+
+circular_check:
+  enabled: true
+  last_check: "2025-10-17T10:00:00Z"
+  status: "clean"
+  detected: []
+
+# ============================================
+# Impact Analysis
+# ============================================
+
+impact_analysis:
+  # Files affected when modifying a file
+  "201_DB_User_C_Table_PROD.sql":
+    direct_impact:
+      - "101_BE_Auth-JWT_C_Service_PROD.py"
+      - "102_BE_User-Register_C_API_PROD.py"
+      - "202_DB_Order_C_Table_PROD.sql"
+    indirect_impact:
+      - "001_FE_User-Login_C_Page_PROD.jsx"
+      - "002_FE_User-Register_C_Page_PROD.jsx"
+      - "104_BE_Auth-Validate_V_Middleware_PROD.py"
+    total_impact: 6
+    risk_level: "high"
+
+  "103_BE_User-Validate_V_Service_PROD.py":
+    direct_impact:
+      - "102_BE_User-Register_C_API_PROD.py"
+    indirect_impact:
+      - "002_FE_User-Register_C_Page_PROD.jsx"
+    total_impact: 2
+    risk_level: "low"
+
+# ============================================
+# Layer Dependency Analysis
+# ============================================
+
+layer_analysis:
+  # Valid inter-layer dependencies (normal flow)
+  valid_dependencies:
+    FE_to_BE: 3
+    BE_to_DB: 4
+    BE_to_BE: 2
+  
+  # Invalid dependencies (warnings)
+  invalid_dependencies:
+    FE_to_DB: 0  # Frontend should not directly access DB
+    DB_to_BE: 0  # DB should not depend on Backend
+    DB_to_FE: 0  # DB should not depend on Frontend
+  
+  health_status: "healthy"
+
+# ============================================
+# Mermaid Diagram (Auto-generated)
+# ============================================
+
+mermaid_diagram: |
+  graph TD
+      FE_001[001_FE_User-Login] --> BE_101[101_BE_Auth-JWT]
+      FE_002[002_FE_User-Register] --> BE_102[102_BE_User-Register]
+      FE_002 --> BE_103[103_BE_User-Validate]
+      
+      BE_101 --> DB_201[201_DB_User]
+      BE_102 --> BE_103
+      BE_102 --> DB_201
+      BE_104[104_BE_Auth-Validate] --> BE_101
+      
+      DB_202[202_DB_Order] --> DB_201
+      DB_202 --> DB_203[203_DB_Product]
+      
+      style DB_201 fill:#f96,stroke:#333,stroke-width:2px
+      style BE_101 fill:#9f6,stroke:#333,stroke-width:2px
+
+# ============================================
+# Auto-update Settings
+# ============================================
+
+auto_update_settings:
+  enabled: true
+  trigger: "on_file_save"  # on_file_save, on_commit, manual
+  scan_folders:
+    - "03_ACTIVE"
+  scan_pattern: "@deps:"
+  update_frequency: "real-time"  # real-time, hourly, daily
+  backup_before_update: true
+
+# ============================================
+# Warnings and Notifications
+# ============================================
+
+warnings:
+  - type: "missing_deps"
+    message: "Following files are missing @deps tags"
+    files: []
+  
+  - type: "orphan_file"
+    message: "Following files have no dependencies and are not depended upon"
+    files: []
+  
+  - type: "circular_dependency"
+    message: "Circular dependencies detected"
+    cycles: []
+
+# ============================================
+# Usage Instructions
+# ============================================
+
+# 1. Auto-generate:
+#    ainaming scan --generate-deps
+#
+# 2. Manual update:
+#    ainaming deps --update
+#
+# 3. Visualize:
+#    ainaming deps --visualize
+#
+# 4. Impact analysis:
+#    ainaming deps --impact 201_DB_User_C_Table_PROD.sql
+#
+# 5. Circular dependency check:
+#    ainaming deps --check-circular
+
+# ============================================
+# Metadata
+# ============================================
+
+metadata:
+  schema_version: "1.0"
+  generator: "ainaming-cli v6.0.0"
+  last_validator: "claude"
+  validation_status: "passed"
+  validation_date: "2025-10-17T10:00:00Z"

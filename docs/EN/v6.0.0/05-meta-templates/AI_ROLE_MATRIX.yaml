@@ -1,0 +1,287 @@
+# v6.0 - AI Role Mapping Standard
+# Location: 07_META/AI_ROLE_MATRIX.yaml
+# Purpose: Define roles and permissions for multi-AI collaboration
+
+version: "6.0.0"
+updated: "2025-10-17"
+project_name: "your-project-name"
+
+# ============================================
+# AI Role Definitions
+# ============================================
+
+roles:
+  # === Code Writer AI ===
+  - name: cursor
+    type: code_writer
+    description: "Responsible for writing business logic and test code"
+    permissions:
+      - action: write
+        folders: [03_ACTIVE, 04_TEST]
+      - action: read
+        folders: [00_DOCS, 02_STATIC, 07_META]
+    responsibilities:
+      - "Write business logic"
+      - "Generate test code"
+      - "Fix bugs"
+      - "Must include @deps tag"
+    output_format:
+      - "Generate complete files (no skeletons)"
+      - "Include @deps, @ai, @created in file header"
+      - "Comments required (English or native language)"
+      - "Generate test code together"
+    restrictions:
+      - "Never modify 01_CONFIG"
+      - "Never modify 07_META files directly"
+      - "No arbitrary external library additions"
+
+  # === Reviewer AI ===
+  - name: claude
+    type: reviewer
+    description: "Responsible for code quality review and documentation"
+    permissions:
+      - action: review
+        folders: [03_ACTIVE, 04_TEST]
+      - action: write
+        folders: [00_DOCS]
+      - action: read
+        folders: [01_CONFIG, 02_STATIC, 05_BUILD, 06_LOGS, 07_META]
+    responsibilities:
+      - "Code review and quality verification"
+      - "Check architectural consistency"
+      - "Write and update documentation"
+      - "Security vulnerability checks"
+    output_format:
+      - "Review comments (improvements + praise)"
+      - "Improvement suggestions (with concrete examples)"
+      - "Documentation updates (00_DOCS)"
+      - "Record in HUMAN_OVERRIDES.md"
+    restrictions:
+      - "No direct code modifications (review only)"
+      - "01_CONFIG is read-only"
+      - "No approval authority (recommendations only)"
+
+  # === Architect AI ===
+  - name: chatgpt
+    type: architect
+    description: "Project structure design and naming convention management"
+    permissions:
+      - action: write
+        folders: [00_DOCS, 07_META]
+      - action: read
+        folders: [all]
+    responsibilities:
+      - "Project structure design"
+      - "File name generation (Naming Wizard)"
+      - "Dependency graph management"
+      - "Coordinate AI collaboration"
+    output_format:
+      - "File name suggestions (following naming conventions)"
+      - "Folder structure design"
+      - "Update DEP_GRAPH.yaml"
+      - "Record CONVERSATION_HISTORY.json"
+    restrictions:
+      - "No direct code writing (structure only)"
+      - "01_CONFIG is read-only"
+      - "No direct 03_ACTIVE modifications"
+
+  # === Assistant AI (Optional) ===
+  - name: windsurf
+    type: assistant
+    description: "Auxiliary tasks and refactoring"
+    permissions:
+      - action: read
+        folders: [all]
+      - action: write
+        folders: [03_ACTIVE]
+    responsibilities:
+      - "Code refactoring"
+      - "Performance optimization"
+      - "Legacy code improvement"
+    output_format:
+      - "Refactoring suggestions"
+      - "Performance improvement reports"
+    restrictions:
+      - "No new feature additions"
+      - "No structural changes"
+
+  # === Final Supervisor (Human) ===
+  - name: human
+    type: supervisor
+    description: "Final decision-making and approval authority"
+    permissions:
+      - action: override
+        folders: [all]
+      - action: approve
+        folders: [all]
+      - action: modify
+        folders: [01_CONFIG]
+    responsibilities:
+      - "Final decision-making"
+      - "Approve/reject AI suggestions"
+      - "Manage security settings"
+      - "Determine project direction"
+      - "Direct 01_CONFIG modifications"
+    output_format:
+      - "Approval/rejection decisions"
+      - "Record in HUMAN_OVERRIDES.md"
+      - "Final deployment approval"
+    restrictions:
+      - "None (full authority)"
+
+# ============================================
+# Collaboration Workflows
+# ============================================
+
+workflows:
+  # Add New Feature
+  - name: "add_new_feature"
+    description: "Collaboration flow for adding new features"
+    steps:
+      - step: 1
+        ai: human
+        action: "Feature request (natural language)"
+        output: "Requirements definition"
+      
+      - step: 2
+        ai: chatgpt
+        action: "Structure design"
+        output: "File name suggestions + folder structure"
+      
+      - step: 3
+        ai: cursor
+        action: "Write code"
+        output: "Complete code + tests"
+      
+      - step: 4
+        ai: claude
+        action: "Code review"
+        output: "Review comments + documentation updates"
+      
+      - step: 5
+        ai: human
+        action: "Final approval"
+        output: "Approval/rejection decision"
+
+  # Fix Bug
+  - name: "fix_bug"
+    description: "Collaboration flow for bug fixes"
+    steps:
+      - step: 1
+        ai: human
+        action: "Bug report"
+        output: "Bug description"
+      
+      - step: 2
+        ai: chatgpt
+        action: "Analyze related files"
+        output: "DEP_GRAPH check + impact scope"
+      
+      - step: 3
+        ai: cursor
+        action: "Fix bug"
+        output: "Fixed code + tests"
+      
+      - step: 4
+        ai: claude
+        action: "Verify fix"
+        output: "Verification results + documentation updates"
+      
+      - step: 5
+        ai: human
+        action: "Deployment approval"
+        output: "Record in HUMAN_OVERRIDES.md"
+
+  # Code Review
+  - name: "code_review"
+    description: "Code review process"
+    steps:
+      - step: 1
+        ai: cursor
+        action: "Complete code writing"
+        output: "Pull Request"
+      
+      - step: 2
+        ai: claude
+        action: "Automated review"
+        output: "Review comments"
+      
+      - step: 3
+        ai: human
+        action: "Final review"
+        output: "Approval/modification request"
+
+# ============================================
+# Conflict Resolution Rules
+# ============================================
+
+conflict_resolution:
+  # Multiple AI editing same file
+  - scenario: "multiple_ai_same_file"
+    rule: "Follow priority defined in AI_ROLE_MATRIX"
+    priority_order: [cursor, windsurf, claude, chatgpt]
+    resolution: "Apply changes from higher priority AI"
+  
+  # AI disagreement
+  - scenario: "ai_disagreement"
+    rule: "Human makes final decision"
+    resolution: "Record in HUMAN_OVERRIDES.md"
+  
+  # Permission violation
+  - scenario: "permission_violation"
+    rule: "Immediately block + warning"
+    resolution: "Notify AI of permissions + request retry"
+
+# ============================================
+# Security and Constraints
+# ============================================
+
+security:
+  # Protect sensitive files
+  - folder: 01_CONFIG
+    rule: "Only human can modify"
+    ai_access: "read-only"
+    warning: "⚠️ AI CANNOT MODIFY - Manual changes only"
+  
+  # External libraries
+  - folder: 02_STATIC
+    subfolder: EXTERNAL_
+    rule: "SHA256 verification required"
+    ai_action: "Auto-update EXTERNAL_DEPENDENCIES.md when adding"
+  
+  # Production code
+  - folder: 03_ACTIVE
+    env: PROD
+    rule: "Human final approval required"
+    ai_action: "Must be reviewed by claude after writing"
+
+# ============================================
+# Metadata
+# ============================================
+
+metadata:
+  created: "2025-10-17"
+  author: "AI Naming Standard v6"
+  last_updated: "2025-10-17"
+  schema_version: "1.0"
+  compatible_with: ["cursor", "claude", "chatgpt", "windsurf"]
+
+# ============================================
+# Usage Examples
+# ============================================
+
+# AIs automatically read this file to understand their roles.
+# 
+# User request:
+#   "Add payment feature"
+#
+# AI processing flow:
+#   1. ChatGPT: "Following files are needed..."
+#   2. Cursor: "Code writing complete"
+#   3. Claude: "Review complete, 2 improvements"
+#   4. Human: "Approved"
+#
+# All AIs reference this file to:
+#   - Check their role
+#   - Verify permission scope
+#   - Collaborate with other AIs

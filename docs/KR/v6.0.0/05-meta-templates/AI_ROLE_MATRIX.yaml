@@ -1,0 +1,287 @@
+# v6.0 - AI 역할 매핑 표준
+# 위치: 07_META/AI_ROLE_MATRIX.yaml
+# 용도: 여러 AI가 동시에 작업할 때 역할과 권한을 명확히 정의
+
+version: "6.0.0"
+updated: "2025-10-17"
+project_name: "your-project-name"
+
+# ============================================
+# AI 역할 정의
+# ============================================
+
+roles:
+  # === 코드 작성 AI ===
+  - name: cursor
+    type: code_writer
+    description: "비즈니스 로직 및 테스트 코드 작성 담당"
+    permissions:
+      - action: write
+        folders: [03_ACTIVE, 04_TEST]
+      - action: read
+        folders: [00_DOCS, 02_STATIC, 07_META]
+    responsibilities:
+      - "비즈니스 로직 작성"
+      - "테스트 코드 생성"
+      - "버그 수정"
+      - "@deps 태그 포함 필수"
+    output_format:
+      - "완전한 파일 생성 (스켈레톤 금지)"
+      - "파일 헤더에 @deps, @ai, @created 포함"
+      - "주석 필수 (한글 또는 영어)"
+      - "테스트 코드 함께 생성"
+    restrictions:
+      - "01_CONFIG 절대 수정 금지"
+      - "07_META 파일 직접 수정 금지"
+      - "외부 라이브러리 임의 추가 금지"
+
+  # === 품질 검토 AI ===
+  - name: claude
+    type: reviewer
+    description: "코드 품질 검토 및 문서화 담당"
+    permissions:
+      - action: review
+        folders: [03_ACTIVE, 04_TEST]
+      - action: write
+        folders: [00_DOCS]
+      - action: read
+        folders: [01_CONFIG, 02_STATIC, 05_BUILD, 06_LOGS, 07_META]
+    responsibilities:
+      - "코드 리뷰 및 품질 검증"
+      - "아키텍처 일관성 확인"
+      - "문서 작성 및 업데이트"
+      - "보안 취약점 점검"
+    output_format:
+      - "리뷰 코멘트 (개선 사항 + 칭찬)"
+      - "개선 제안 (구체적 예시 포함)"
+      - "문서 업데이트 (00_DOCS)"
+      - "HUMAN_OVERRIDES.md 기록"
+    restrictions:
+      - "코드 직접 수정 금지 (리뷰만)"
+      - "01_CONFIG 읽기 전용"
+      - "승인 권한 없음 (권고만 가능)"
+
+  # === 구조 설계 AI ===
+  - name: chatgpt
+    type: architect
+    description: "프로젝트 구조 설계 및 네이밍 규칙 관리"
+    permissions:
+      - action: write
+        folders: [00_DOCS, 07_META]
+      - action: read
+        folders: [all]
+    responsibilities:
+      - "프로젝트 구조 설계"
+      - "파일명 생성 (Naming Wizard)"
+      - "의존성 그래프 관리"
+      - "AI 간 협업 조율"
+    output_format:
+      - "파일명 제안 (네이밍 규칙 준수)"
+      - "폴더 구조 설계"
+      - "DEP_GRAPH.yaml 업데이트"
+      - "CONVERSATION_HISTORY.json 기록"
+    restrictions:
+      - "코드 직접 작성 금지 (구조만)"
+      - "01_CONFIG 읽기 전용"
+      - "03_ACTIVE 직접 수정 금지"
+
+  # === 추가 AI (선택) ===
+  - name: windsurf
+    type: assistant
+    description: "보조 작업 및 리팩토링 담당"
+    permissions:
+      - action: read
+        folders: [all]
+      - action: write
+        folders: [03_ACTIVE]
+    responsibilities:
+      - "코드 리팩토링"
+      - "성능 최적화"
+      - "레거시 코드 개선"
+    output_format:
+      - "리팩토링 제안"
+      - "성능 개선 보고서"
+    restrictions:
+      - "새 기능 추가 금지"
+      - "구조 변경 금지"
+
+  # === 최종 감독자 (인간) ===
+  - name: human
+    type: supervisor
+    description: "최종 의사결정 및 승인 권한자"
+    permissions:
+      - action: override
+        folders: [all]
+      - action: approve
+        folders: [all]
+      - action: modify
+        folders: [01_CONFIG]
+    responsibilities:
+      - "최종 의사결정"
+      - "AI 제안 승인/거부"
+      - "보안 설정 관리"
+      - "프로젝트 방향 결정"
+      - "01_CONFIG 직접 수정"
+    output_format:
+      - "승인/거부 결정"
+      - "HUMAN_OVERRIDES.md 기록"
+      - "최종 배포 승인"
+    restrictions:
+      - "없음 (전체 권한)"
+
+# ============================================
+# 협업 워크플로우
+# ============================================
+
+workflows:
+  # 새 기능 추가
+  - name: "add_new_feature"
+    description: "새로운 기능 추가 시 협업 흐름"
+    steps:
+      - step: 1
+        ai: human
+        action: "기능 요청 (자연어)"
+        output: "요구사항 정의"
+      
+      - step: 2
+        ai: chatgpt
+        action: "구조 설계"
+        output: "파일명 제안 + 폴더 구조"
+      
+      - step: 3
+        ai: cursor
+        action: "코드 작성"
+        output: "완전한 코드 + 테스트"
+      
+      - step: 4
+        ai: claude
+        action: "코드 리뷰"
+        output: "리뷰 코멘트 + 문서 업데이트"
+      
+      - step: 5
+        ai: human
+        action: "최종 승인"
+        output: "승인/거부 결정"
+
+  # 버그 수정
+  - name: "fix_bug"
+    description: "버그 수정 시 협업 흐름"
+    steps:
+      - step: 1
+        ai: human
+        action: "버그 리포트"
+        output: "버그 설명"
+      
+      - step: 2
+        ai: chatgpt
+        action: "관련 파일 분석"
+        output: "DEP_GRAPH 확인 + 영향 범위"
+      
+      - step: 3
+        ai: cursor
+        action: "버그 수정"
+        output: "수정된 코드 + 테스트"
+      
+      - step: 4
+        ai: claude
+        action: "수정 검증"
+        output: "검증 결과 + 문서 업데이트"
+      
+      - step: 5
+        ai: human
+        action: "배포 승인"
+        output: "HUMAN_OVERRIDES.md 기록"
+
+  # 코드 리뷰
+  - name: "code_review"
+    description: "코드 리뷰 프로세스"
+    steps:
+      - step: 1
+        ai: cursor
+        action: "코드 작성 완료"
+        output: "Pull Request"
+      
+      - step: 2
+        ai: claude
+        action: "자동 리뷰"
+        output: "리뷰 코멘트"
+      
+      - step: 3
+        ai: human
+        action: "최종 리뷰"
+        output: "승인/수정 요청"
+
+# ============================================
+# 충돌 해결 규칙
+# ============================================
+
+conflict_resolution:
+  # 동일 파일 동시 수정
+  - scenario: "multiple_ai_same_file"
+    rule: "AI_ROLE_MATRIX에 정의된 우선순위 따름"
+    priority_order: [cursor, windsurf, claude, chatgpt]
+    resolution: "높은 우선순위 AI의 변경사항 적용"
+  
+  # AI 의견 충돌
+  - scenario: "ai_disagreement"
+    rule: "human이 최종 결정"
+    resolution: "HUMAN_OVERRIDES.md에 기록"
+  
+  # 권한 위반
+  - scenario: "permission_violation"
+    rule: "즉시 차단 + 경고"
+    resolution: "AI에게 권한 알림 + 재시도 요청"
+
+# ============================================
+# 보안 및 제약사항
+# ============================================
+
+security:
+  # 민감한 파일 보호
+  - folder: 01_CONFIG
+    rule: "human만 수정 가능"
+    ai_access: "read-only"
+    warning: "⚠️ AI CANNOT MODIFY - Manual changes only"
+  
+  # 외부 라이브러리
+  - folder: 02_STATIC
+    subfolder: EXTERNAL_
+    rule: "SHA256 검증 필수"
+    ai_action: "추가 시 EXTERNAL_DEPENDENCIES.md 자동 업데이트"
+  
+  # 프로덕션 코드
+  - folder: 03_ACTIVE
+    env: PROD
+    rule: "human 최종 승인 필수"
+    ai_action: "작성 후 반드시 claude 리뷰"
+
+# ============================================
+# 메타데이터
+# ============================================
+
+metadata:
+  created: "2025-10-17"
+  author: "AI Naming Standard v6"
+  last_updated: "2025-10-17"
+  schema_version: "1.0"
+  compatible_with: ["cursor", "claude", "chatgpt", "windsurf"]
+
+# ============================================
+# 사용 예시
+# ============================================
+
+# 이 파일은 AI들이 자동으로 읽어서 역할을 이해합니다.
+# 
+# 사용자 요청:
+#   "결제 기능 추가해줘"
+#
+# AI 처리 흐름:
+#   1. ChatGPT: "다음 파일이 필요합니다..."
+#   2. Cursor: "코드 작성 완료"
+#   3. Claude: "리뷰 완료, 2개 개선사항"
+#   4. Human: "승인"
+#
+# 모든 AI는 이 파일을 참조하여:
+#   - 자신의 역할 확인
+#   - 권한 범위 확인
+#   - 다른 AI와 협업

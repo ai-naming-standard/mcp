@@ -1,37 +1,75 @@
 import { getMessages, formatMessage } from '../messages/index.js';
+import namingRules from '../rules/convention.js';
 
-// 파일명 생성 함수
+// ========== v4 기존 도구들 (하위 호환성) ==========
+
+// 파일명 생성 함수 (v5.0.1 ChatGPT Enhancement)
 export async function generateFileName({
-  microservice,
-  sequence = '001',
-  layer,
+  folder = '03_ACTIVE',
+  index = '001',
+  layer = 'BE',
   domain,
-  action,
-  feature = 'base',
-  env = 'dev',
-  ext
+  feature,
+  action = 'R',
+  detail = 'Service',
+  env = 'DEV',
+  ext = 'js',
+  isTest = false,
+  isStatic = false,
+  staticType = null
 }) {
   const msg = getMessages();
   
-  // 도메인 정규화 (공백을 하이픈으로)
-  const normalizedDomain = domain.toLowerCase().replace(/\s+/g, '-');
+  // 02_STATIC 파일 처리 (ChatGPT Enhancement)
+  if (folder === '02_STATIC' || isStatic) {
+    const prefix = staticType === 'template' ? 'TEMPLATE_' : 
+                   staticType === 'config' ? 'CONFIG_' : 'ASSET_';
+    const staticName = domain || 'file';
+    return {
+      fileName: `${prefix}${staticName}.${ext}`,
+      folder: '02_STATIC',
+      fullPath: `02_STATIC/${prefix}${staticName}.${ext}`,
+      description: `Static ${staticType || 'asset'} file`,
+      requiresPrefix: true
+    };
+  }
   
-  // 파일명 생성
-  const fileName = `${microservice}_${sequence}_${layer}_${normalizedDomain}_${action}_${feature}_${env}.${ext}`;
+  // 04_TEST 파일 처리 (ChatGPT Enhancement)
+  if (folder === '04_TEST' || isTest) {
+    const testType = detail || 'Unit';
+    const testFileName = `${index}_TEST_${domain}-${feature}_${testType}_${env}.test.${ext}`;
+    return {
+      fileName: testFileName,
+      folder: '04_TEST',
+      fullPath: `04_TEST/${testFileName}`,
+      description: `Test file for ${domain}-${feature} (${testType})`,
+      indexedNaming: true
+    };
+  }
+  
+  // 도메인과 기능 정규화 (03_ACTIVE 파일)
+  const normalizedDomain = domain.charAt(0).toUpperCase() + domain.slice(1).toLowerCase();
+  const normalizedFeature = feature.charAt(0).toUpperCase() + feature.slice(1).toLowerCase();
+  
+  // 표준 파일명 생성 (v5 패턴)
+  const fileName = `${index}_${layer}_${normalizedDomain}-${normalizedFeature}_${action}_${detail}_${env}.${ext}`;
   
   return {
     fileName,
-    path: `/${microservice}/${layer}/${fileName}`,
-    description: `${microservice} ${msg.descriptions.fileDescription} ${layer} ${normalizedDomain} ${action}`
+    folder,
+    fullPath: `${folder}/${fileName}`,
+    description: `${layer} ${normalizedDomain} ${normalizedFeature} ${detail} for ${env} environment`,
+    hasDependency: index.includes('-') || index.includes('s') || /[a-z]$/.test(index)
   };
 }
 
-// 파일명 검증 함수
-export async function validateFileName({ fileName }) {
+// 파일명 검증 함수 (v5 업데이트)
+export async function validateFileName({ fileName, folder = '03_ACTIVE' }) {
   const msg = getMessages();
+  const rules = namingRules();
   
-  // 파일명 패턴
-  const pattern = /^([a-z]+)_([0-9]{3}|v[0-9]+|main|alt|[0-9]{3}[a-z]?[0-9]?|[0-9]{3}-[0-9]+|[0-9]{3}s[0-9]+)_([a-z]+)_([a-z]+-[a-z]+)_([a-z]+)_([a-z]+)_([a-z]+)\.([a-z]+)$/;
+  // v5 파일명 패턴
+  const pattern = /^([0-9]{3}(?:\.[0-9]+)?(?:[a-z]|s[0-9]+|-[0-9]+)?)_([A-Z]{2,6})_([A-Z][a-z]+(?:-[A-Z][a-z]+)+)_([CRUDVXSTG])_([A-Z][a-z]+)_([A-Z]{2,6})\.([a-z]+)$/;
   
   const match = fileName.match(pattern);
   
@@ -39,37 +77,40 @@ export async function validateFileName({ fileName }) {
     return {
       valid: false,
       errors: [
-        msg.errors.invalidPattern,
-        msg.errors.correctFormat
+        msg.errors.invalidPattern || 'Invalid file name pattern',
+        'Correct format: [Index]_[Layer]_[Domain]-[Feature]_[Action]_[Detail]_[Env].[ext]'
       ],
       suggestion: await suggestCorrection({ fileName })
     };
   }
   
-  const [, microservice, sequence, layer, domain, action, feature, env, ext] = match;
+  const [, index, layer, domainFeature, action, detail, env, ext] = match;
   
   const errors = [];
   const warnings = [];
   
-  // 각 컴포넌트 검증
-  const validMicroservices = ['auth', 'user', 'payment', 'order', 'product', 'notification', 'analytics', 'gateway', 'search', 'recommendation'];
-  if (!validMicroservices.includes(microservice)) {
-    warnings.push(`${msg.warnings.customMicroservice.replace('가 표준 목록에 없습니다. 커스텀 서비스인지 확인하세요', '')}: '${microservice}'`);
+  // 폴더별 네이밍 규칙 체크
+  const folderRule = rules.standardFolders[folder];
+  if (folderRule && !folderRule.namingRuleRequired && folder !== '03_ACTIVE') {
+    warnings.push(`Naming convention is optional for ${folder}`);
   }
   
-  const validLayers = ['controller', 'service', 'repository', 'model', 'dto', 'middleware', 'util', 'config', 'validator', 'helper'];
+  // Layer 검증
+  const validLayers = ['FE', 'BE', 'DB', 'API', 'ML', 'INFRA', 'SH'];
   if (!validLayers.includes(layer)) {
-    errors.push(`${msg.errors.invalidLayer}: '${layer}'`);
+    errors.push(`Invalid layer: '${layer}'`);
   }
   
-  const validActions = ['create', 'read', 'update', 'delete', 'validate', 'transform', 'calculate', 'send', 'fetch', 'process'];
+  // Action 검증
+  const validActions = ['C', 'R', 'U', 'D', 'V', 'X', 'S', 'T', 'G'];
   if (!validActions.includes(action)) {
-    warnings.push(`${msg.warnings.nonStandardAction}: '${action}'`);
+    errors.push(`Invalid action: '${action}'`);
   }
   
-  const validEnvs = ['dev', 'test', 'staging', 'prod', 'common'];
+  // Environment 검증
+  const validEnvs = ['DEV', 'STG', 'PROD', 'COMMON'];
   if (!validEnvs.includes(env)) {
-    errors.push(`${msg.errors.invalidEnv}: '${env}'`);
+    errors.push(`Invalid environment: '${env}'`);
   }
   
   return {
@@ -77,15 +118,15 @@ export async function validateFileName({ fileName }) {
     errors,
     warnings,
     components: {
-      microservice,
-      sequence,
+      index,
       layer,
-      domain,
+      domainFeature,
       action,
-      feature,
+      detail,
       env,
       ext
-    }
+    },
+    folder
   };
 }
 
@@ -96,97 +137,79 @@ export async function explainFileName({ fileName }) {
   
   if (!validation.valid) {
     return {
-      error: msg.errors.invalidPattern,
+      error: msg.errors.invalidPattern || 'Invalid pattern',
       details: validation.errors
     };
   }
   
-  const { microservice, sequence, layer, domain, action, feature, env, ext } = validation.components;
+  const { index, layer, domainFeature, action, detail, env, ext } = validation.components;
   
-  // 시퀀스 타입 분석
-  let sequenceType = 'standard';
-  let sequenceExplanation = `${msg.sequences.standard} ${sequence}`;
+  // 액션 코드 설명
+  const actionDescriptions = {
+    'C': 'Create',
+    'R': 'Read',
+    'U': 'Update',
+    'D': 'Delete',
+    'V': 'Validate',
+    'X': 'Execute',
+    'S': 'Send',
+    'T': 'Transform',
+    'G': 'Generate'
+  };
   
-  if (sequence.includes('-')) {
-    sequenceType = 'dependency';
-    sequenceExplanation = msg.sequences.dependency;
-  } else if (sequence.match(/[0-9]{3}[a-z]/)) {
-    sequenceType = 'parallel';
-    sequenceExplanation = msg.sequences.parallel;
-  } else if (sequence.includes('s')) {
-    sequenceType = 'subordinate';
-    sequenceExplanation = msg.sequences.subordinate;
-  } else if (sequence === 'main') {
-    sequenceExplanation = msg.sequences.main;
-  } else if (sequence === 'alt') {
-    sequenceExplanation = msg.sequences.alt;
-  } else if (sequence.startsWith('v')) {
-    sequenceExplanation = `${msg.sequences.version} ${sequence.substring(1)}`;
-  }
+  // 레이어 설명
+  const layerDescriptions = {
+    'FE': 'Frontend',
+    'BE': 'Backend',
+    'DB': 'Database',
+    'API': 'API Gateway',
+    'ML': 'Machine Learning',
+    'INFRA': 'Infrastructure',
+    'SH': 'Shared/Common'
+  };
   
   return {
     fileName,
     explanation: {
-      microservice: `${msg.descriptions.microservice}: ${microservice}`,
-      sequence: sequenceExplanation,
-      layer: `${msg.descriptions.layer}: ${layer}`,
-      domain: `${msg.descriptions.domain}: ${domain.replace('-', ' ')}`,
-      action: `${msg.descriptions.action}: ${action}`,
-      feature: `${msg.descriptions.feature}: ${feature}`,
-      environment: `${msg.descriptions.environment}: ${env}`,
-      extension: `${msg.descriptions.extension}: ${ext}`
+      index: `Sequence: ${index}`,
+      layer: `Layer: ${layerDescriptions[layer] || layer}`,
+      domainFeature: `Domain-Feature: ${domainFeature}`,
+      action: `Action: ${actionDescriptions[action]} (${action})`,
+      detail: `Component: ${detail}`,
+      environment: `Environment: ${env}`,
+      extension: `Format: ${ext}`
     },
-    purpose: msg.descriptions.purpose
-      .replace('環境', env)
-      .replace('サービス', microservice)
-      .replace('レイヤー', layer)
-      .replace('に対する', domain.replace('-', ' '))
-      .replace('操作', action),
-    sequenceType
+    purpose: `${layerDescriptions[layer]} ${detail} that performs ${actionDescriptions[action]} operation for ${domainFeature} in ${env} environment`
   };
 }
 
 // Layer 코드 조회 함수
 export async function getLayerCodes({ category = 'all' }) {
   const msg = getMessages();
-  const layerDescs = msg.layers;
   
   const layers = {
-    backend: [
-      { code: 'controller', name: 'Controller', description: layerDescs.controller },
-      { code: 'service', name: 'Service', description: layerDescs.service },
-      { code: 'repository', name: 'Repository', description: layerDescs.repository },
-      { code: 'model', name: 'Model', description: layerDescs.model },
-      { code: 'dto', name: 'DTO', description: layerDescs.dto },
-      { code: 'middleware', name: 'Middleware', description: layerDescs.middleware },
-      { code: 'validator', name: 'Validator', description: layerDescs.validator }
-    ],
     frontend: [
-      { code: 'component', name: 'Component', description: layerDescs.component },
-      { code: 'page', name: 'Page', description: layerDescs.page },
-      { code: 'hook', name: 'Hook', description: layerDescs.hook },
-      { code: 'store', name: 'Store', description: layerDescs.store },
-      { code: 'util', name: 'Utility', description: layerDescs.util },
-      { code: 'style', name: 'Style', description: layerDescs.style }
+      { code: 'FE', name: 'Frontend', description: 'React, Vue, Angular' }
+    ],
+    backend: [
+      { code: 'BE', name: 'Backend', description: 'Node.js, Python, Java' }
     ],
     data: [
-      { code: 'migration', name: 'Migration', description: layerDescs.migration },
-      { code: 'seed', name: 'Seed', description: layerDescs.seed },
-      { code: 'schema', name: 'Schema', description: layerDescs.schema }
+      { code: 'DB', name: 'Database', description: 'MySQL, MongoDB, PostgreSQL' }
     ],
     infra: [
-      { code: 'config', name: 'Config', description: layerDescs.config },
-      { code: 'docker', name: 'Docker', description: layerDescs.docker },
-      { code: 'k8s', name: 'Kubernetes', description: layerDescs.k8s },
-      { code: 'terraform', name: 'Terraform', description: layerDescs.terraform }
+      { code: 'API', name: 'API Gateway', description: 'REST, GraphQL, gRPC' },
+      { code: 'ML', name: 'Machine Learning', description: 'TensorFlow, PyTorch' },
+      { code: 'INFRA', name: 'Infrastructure', description: 'Docker, K8s, Terraform' },
+      { code: 'SH', name: 'Shared', description: 'Common utilities' }
     ]
   };
   
   if (category === 'all') {
     return {
       layers: [
-        ...layers.backend,
         ...layers.frontend,
+        ...layers.backend,
         ...layers.data,
         ...layers.infra
       ]
@@ -202,28 +225,22 @@ export async function getLayerCodes({ category = 'all' }) {
 // Action 코드 조회 함수
 export async function getActionCodes({ category = 'all' }) {
   const msg = getMessages();
-  const actionDescs = msg.actions;
   
   const actions = {
     crud: [
-      { code: 'create', name: 'Create', description: actionDescs.create },
-      { code: 'read', name: 'Read', description: actionDescs.read },
-      { code: 'update', name: 'Update', description: actionDescs.update },
-      { code: 'delete', name: 'Delete', description: actionDescs.delete }
+      { code: 'C', name: 'Create', description: 'Create new resource' },
+      { code: 'R', name: 'Read', description: 'Read data' },
+      { code: 'U', name: 'Update', description: 'Update existing data' },
+      { code: 'D', name: 'Delete', description: 'Delete resource' }
     ],
     processing: [
-      { code: 'validate', name: 'Validate', description: actionDescs.validate },
-      { code: 'transform', name: 'Transform', description: actionDescs.transform },
-      { code: 'calculate', name: 'Calculate', description: actionDescs.calculate },
-      { code: 'process', name: 'Process', description: actionDescs.process },
-      { code: 'analyze', name: 'Analyze', description: actionDescs.analyze }
+      { code: 'V', name: 'Validate', description: 'Validate data' },
+      { code: 'T', name: 'Transform', description: 'Transform data' },
+      { code: 'X', name: 'Execute', description: 'Execute process' },
+      { code: 'G', name: 'Generate', description: 'Generate output' }
     ],
     communication: [
-      { code: 'send', name: 'Send', description: actionDescs.send },
-      { code: 'fetch', name: 'Fetch', description: actionDescs.fetch },
-      { code: 'sync', name: 'Sync', description: actionDescs.sync },
-      { code: 'publish', name: 'Publish', description: actionDescs.publish },
-      { code: 'subscribe', name: 'Subscribe', description: actionDescs.subscribe }
+      { code: 'S', name: 'Send', description: 'Send data' }
     ]
   };
   
@@ -243,106 +260,100 @@ export async function getActionCodes({ category = 'all' }) {
   };
 }
 
-// 프로젝트 템플릿 생성 함수
+// 프로젝트 템플릿 생성 함수 (v5 업데이트)
 export async function getProjectTemplate({ projectType, scale = 'mvp' }) {
   const msg = getMessages();
+  const rules = namingRules();
   
-  const templates = {
-    ecommerce: {
-      name: msg.projectTypes.ecommerce,
-      microservices: ['auth', 'user', 'product', 'order', 'payment', 'inventory', 'cart', 'shipping', 'review'],
-      mvp: 20,
-      growth: 50,
-      mature: 100,
-      enterprise: 200
-    },
-    'social-media': {
-      name: msg.projectTypes['social-media'],
-      microservices: ['identity', 'profile', 'feed', 'post', 'media', 'messaging', 'comment', 'follow', 'notification'],
-      mvp: 25,
-      growth: 60,
-      mature: 120,
-      enterprise: 250
-    },
-    fintech: {
-      name: msg.projectTypes.fintech,
-      microservices: ['auth', 'account', 'transaction', 'payment', 'wallet', 'kyc', 'fraud', 'reporting', 'notification'],
-      mvp: 30,
-      growth: 70,
-      mature: 150,
-      enterprise: 300
-    }
-  };
-  
-  const template = templates[projectType];
+  const template = rules.projectTemplates[projectType];
   if (!template) {
     return {
-      error: `${msg.errors.unknownProjectType}: ${projectType}`
+      error: `Unknown project type: ${projectType}`
     };
   }
   
-  const fileCount = template[scale];
-  const files = [];
+  // 7개 표준 폴더 구조
+  const folders = [
+    '00_DOCS',
+    '01_CONFIG', 
+    '02_STATIC',
+    '03_ACTIVE',
+    '04_TEST',
+    '05_BUILD',
+    '06_LOGS'
+  ];
   
-  // 각 마이크로서비스별 기본 파일 생성
-  for (const service of template.microservices.slice(0, scale === 'mvp' ? 3 : template.microservices.length)) {
-    // Controller
-    files.push(`${service}_001_controller_main-api_read_validation_${scale === 'mvp' ? 'dev' : 'prod'}.ts`);
-    files.push(`${service}_002_controller_main-api_create_validation_${scale === 'mvp' ? 'dev' : 'prod'}.ts`);
+  // 샘플 파일 생성
+  const sampleFiles = {
+    '00_DOCS': ['README.md', 'API_Documentation.md', 'Architecture.md'],
+    '01_CONFIG': ['config.dev.yml', 'config.prod.yml', '.env.example'],
+    '02_STATIC': ['logo.png', 'favicon.ico'],
+    '03_ACTIVE': [],
+    '04_TEST': ['test_user_service.py', 'e2e_checkout.test.js'],
+    '05_BUILD': [],
+    '06_LOGS': []
+  };
+  
+  // 03_ACTIVE에 도메인별 파일 추가
+  let fileIndex = 1;
+  for (const domain of template.domains.slice(0, scale === 'mvp' ? 3 : template.domains.length)) {
+    // Frontend
+    sampleFiles['03_ACTIVE'].push(
+      `${String(fileIndex).padStart(3, '0')}_FE_${domain}-List_R_Page_PROD.jsx`
+    );
+    fileIndex++;
     
-    // Service
-    files.push(`${service}_001_service_core-logic_process_calculation_${scale === 'mvp' ? 'dev' : 'prod'}.ts`);
+    // Backend
+    sampleFiles['03_ACTIVE'].push(
+      `${String(fileIndex).padStart(3, '0')}_BE_${domain}-Create_C_Service_PROD.py`
+    );
+    fileIndex++;
     
-    // Repository
-    files.push(`${service}_001_repository_data-access_read_caching_${scale === 'mvp' ? 'dev' : 'prod'}.ts`);
-    
-    // Model
-    files.push(`${service}_001_model_schema-definition_create_validation_common.ts`);
-    
-    if (files.length >= fileCount) break;
+    // Database
+    sampleFiles['03_ACTIVE'].push(
+      `${String(fileIndex).padStart(3, '0')}_DB_${domain}-Schema_C_Migration_PROD.sql`
+    );
+    fileIndex++;
   }
   
   return {
     projectType,
     projectName: template.name,
     scale,
-    microservices: template.microservices,
-    estimatedFiles: fileCount,
-    sampleFiles: files.slice(0, 10),
-    structure: {
-      controllers: files.filter(f => f.includes('_controller_')).length,
-      services: files.filter(f => f.includes('_service_')).length,
-      repositories: files.filter(f => f.includes('_repository_')).length,
-      models: files.filter(f => f.includes('_model_')).length
-    }
+    folders,
+    estimatedFiles: template.estimatedFiles[scale],
+    sampleStructure: sampleFiles,
+    domains: template.domains
   };
 }
 
 // 일괄 파일명 생성 함수
-export async function batchGenerateFileNames({ projectType, microservices, count = 10 }) {
+export async function batchGenerateFileNames({ projectType, domains, count = 10 }) {
   const files = [];
-  const layers = ['controller', 'service', 'repository', 'model', 'dto'];
-  const actions = ['create', 'read', 'update', 'delete', 'validate'];
-  const features = ['validation', 'caching', 'logging', 'encryption', 'notification'];
-  const envs = ['dev', 'test', 'prod'];
+  const layers = ['FE', 'BE', 'DB'];
+  const actions = ['C', 'R', 'U', 'D'];
+  const details = ['Page', 'Service', 'Schema', 'Controller', 'Component'];
+  const envs = ['DEV', 'STG', 'PROD'];
   
   for (let i = 0; i < count && files.length < count; i++) {
-    for (const service of microservices) {
+    for (const domain of domains) {
       const layer = layers[i % layers.length];
       const action = actions[Math.floor(i / layers.length) % actions.length];
-      const feature = features[i % features.length];
+      const detail = details[i % details.length];
       const env = envs[i % envs.length];
-      const sequence = String(i + 1).padStart(3, '0');
+      const index = String(i + 1).padStart(3, '0');
+      
+      const ext = layer === 'FE' ? 'jsx' : layer === 'BE' ? 'py' : 'sql';
       
       const fileName = await generateFileName({
-        microservice: service,
-        sequence,
+        index,
         layer,
-        domain: `${service}-main`,
+        domain,
+        feature: 'Main',
         action,
-        feature,
+        detail,
         env,
-        ext: 'ts'
+        ext
       });
       
       files.push(fileName);
@@ -364,44 +375,451 @@ export async function suggestCorrection({ fileName }) {
   
   // 파일명을 언더스코어로 분리
   const parts = fileName.split(/[_\.]/);
-  
-  // 확장자 추출
   const ext = parts[parts.length - 1];
   
-  // 각 파트 분석 및 제안
   const suggestions = [];
   
-  // 첫 번째 파트: 마이크로서비스
-  if (parts[0]) {
-    const normalized = parts[0].toLowerCase().replace(/[^a-z]/g, '');
-    if (normalized !== parts[0]) {
-      suggestions.push(`${msg.suggestions.fixMicroservice}: '${normalized}'`);
-    }
-  } else {
-    suggestions.push(msg.suggestions.addMicroservice);
-  }
-  
-  // 두 번째 파트: 순번
-  if (parts[1]) {
-    if (!/^([0-9]{3}|v[0-9]+|main|alt)/.test(parts[1])) {
-      suggestions.push(msg.suggestions.fixSequence);
-    }
-  } else {
-    suggestions.push(msg.suggestions.addSequence);
-  }
-  
-  // 나머지 파트들 체크
-  if (parts.length < 8) {
-    suggestions.push(`${msg.errors.missingComponents}: [ms]_[seq]_[layer]_[domain]_[action]_[feature]_[env].[ext]`);
+  // v5 형식 체크
+  if (parts.length < 7) {
+    suggestions.push('Missing components. Full format: [Index]_[Layer]_[Domain]-[Feature]_[Action]_[Detail]_[Env].[ext]');
   }
   
   // 추천 파일명 생성
-  const recommended = `${parts[0] || 'service'}_001_${parts[2] || 'controller'}_${parts[3] || 'main-api'}_${parts[4] || 'read'}_${parts[5] || 'validation'}_${parts[6] || 'dev'}.${ext || 'ts'}`;
+  const recommended = `001_BE_${parts[2] || 'User-Main'}_R_Service_DEV.${ext || 'js'}`;
   
   return {
     original: fileName,
     issues: suggestions,
-    recommended: `${msg.suggestions.recommended}: ${recommended}`,
-    pattern: '[microservice]_[sequence]_[layer]_[domain-sub]_[action]_[feature]_[env].[ext]'
+    recommended: `Recommended: ${recommended}`,
+    pattern: '[Index]_[Layer]_[Domain]-[Feature]_[Action]_[Detail]_[Env].[ext]'
   };
 }
+
+// ========== v5.0.2 외부 파일 관리 도구들 ==========
+
+// 외부 파일 처리 도구
+export async function handleExternalFile({ 
+  vendor,
+  version,
+  fileType = 'JS',
+  url,
+  fileName,
+  license = 'Unknown'
+}) {
+  const msg = getMessages();
+  const rules = namingRules();
+  
+  // EXTERNAL_ 파일명 생성
+  const ext = fileName ? fileName.split('.').pop() : 'js';
+  const externalFileName = `EXTERNAL_${fileType}_${vendor}_${version}.${ext}`;
+  const filePath = `02_STATIC/${externalFileName}`;
+  
+  // 의존성 기록 정보
+  const dependencyRecord = {
+    fileName: externalFileName,
+    version,
+    vendor,
+    url,
+    dateAdded: new Date().toISOString().split('T')[0],
+    license,
+    path: filePath,
+    sha256: 'TO_BE_CALCULATED',  // AI가 다운로드 시 계산
+    importStatement: `import ${vendor} from '../../02_STATIC/${externalFileName}';`
+  };
+  
+  return {
+    fileName: externalFileName,
+    path: filePath,
+    dependencyRecord,
+    instructions: [
+      `1. Download file from: ${url}`,
+      `2. Save as: ${filePath}`,
+      `3. Calculate SHA256 hash`,
+      `4. Update 00_DOCS/EXTERNAL_DEPENDENCIES.md`,
+      `5. Never modify the external file`,
+      `6. Use in code: ${dependencyRecord.importStatement}`
+    ],
+    message: msg.v5?.externalFileHandled || `External file registered: ${externalFileName}`
+  };
+}
+
+// 외부 파일 버전 업데이트 도구
+export async function updateExternalFileVersion({
+  currentFileName,
+  newVersion,
+  newUrl
+}) {
+  const msg = getMessages();
+  
+  // 기존 파일명 파싱
+  const match = currentFileName.match(/^EXTERNAL_([^_]+)_([^_]+)_v([\d.]+)(.*)\.(.+)$/);
+  if (!match) {
+    return {
+      error: 'Invalid external file name format',
+      expected: 'EXTERNAL_[Type]_[Vendor]_[Version].[ext]'
+    };
+  }
+  
+  const [, type, vendor, oldVersion, suffix, ext] = match;
+  
+  // 새 파일명 생성
+  const deprecatedFileName = `EXTERNAL_${type}_${vendor}_v${oldVersion}_DEPRECATED.${ext}`;
+  const newFileName = `EXTERNAL_${type}_${vendor}_${newVersion}.${ext}`;
+  
+  return {
+    actions: [
+      {
+        step: 1,
+        action: 'Rename old file',
+        from: `02_STATIC/${currentFileName}`,
+        to: `02_STATIC/${deprecatedFileName}`
+      },
+      {
+        step: 2,
+        action: 'Download new version',
+        url: newUrl,
+        saveTo: `02_STATIC/${newFileName}`
+      },
+      {
+        step: 3,
+        action: 'Update imports in 03_ACTIVE',
+        oldImport: `'../../02_STATIC/${currentFileName}'`,
+        newImport: `'../../02_STATIC/${newFileName}'`
+      },
+      {
+        step: 4,
+        action: 'Update EXTERNAL_DEPENDENCIES.md',
+        markAsDeprecated: deprecatedFileName,
+        addNew: newFileName
+      }
+    ],
+    oldFile: deprecatedFileName,
+    newFile: newFileName,
+    message: `External file update plan created: ${vendor} v${oldVersion} → ${newVersion}`
+  };
+}
+
+// 외부 의존성 목록 생성 도구
+export async function generateDependencyManifest() {
+  const msg = getMessages();
+  
+  const manifestContent = `# External Dependencies\n\n` +
+    `Generated: ${new Date().toISOString()}\n\n` +
+    `| File Name | Version | Vendor | URL | SHA256 | Date | License | Notes |\n` +
+    `|-----------|---------|--------|-----|--------|------|---------|-------|\n` +
+    `| (AI will populate this table) | | | | | | | |\n`;
+  
+  return {
+    fileName: 'EXTERNAL_DEPENDENCIES.md',
+    path: '00_DOCS/EXTERNAL_DEPENDENCIES.md',
+    content: manifestContent,
+    instructions: [
+      'Create this file in 00_DOCS/',
+      'Update whenever adding external files',
+      'Include SHA256 hash for security',
+      'Track all version changes',
+      'Mark deprecated files clearly'
+    ],
+    message: 'Dependency manifest template generated'
+  };
+}
+
+// ========== v5 새로운 도구들 ==========
+
+// 1. 프로젝트 구조 생성 도구
+export async function createProjectStructure({ projectName = 'new-project' }) {
+  const msg = getMessages();
+  const rules = namingRules();
+  
+  const structure = {
+    projectName,
+    folders: [],
+    files: [],
+    commands: []
+  };
+  
+  // 7개 표준 폴더 생성 명령
+  for (const [folderName, folderInfo] of Object.entries(rules.standardFolders)) {
+    structure.folders.push({
+      name: folderName,
+      path: `${projectName}/${folderName}`,
+      description: folderInfo.description,
+      aiPermission: folderInfo.aiPermission
+    });
+    
+    structure.commands.push(`mkdir ${projectName}/${folderName}`);
+  }
+  
+  // 기본 파일 추가 (ChatGPT Enhancement: AI 권한 헤더 포함)
+  structure.files = [
+    { 
+      path: `${projectName}/00_DOCS/README.md`, 
+      content: `<!-- ⚠️ AI PERMISSION: NO-MODIFY -->\n<!-- This file is protected from AI modifications -->\n# ${projectName}\n\nBuilt with AI Naming Convention v5.0.1 (ChatGPT Enhanced)` 
+    },
+    { 
+      path: `${projectName}/01_CONFIG/.env.example`, 
+      content: '# ⚠️ AI PERMISSION: NO-MODIFY - CRITICAL\n# Environment variables\n# Manual changes only - contains sensitive data\n' 
+    },
+    { 
+      path: `${projectName}/01_CONFIG/config.dev.yml`, 
+      content: '# ⚠️ AI PERMISSION: NO-MODIFY\nenv: development\n' 
+    },
+    { path: `${projectName}/01_CONFIG/.gitignore`, content: '.env\nnode_modules/\n05_BUILD/\n06_LOGS/' },
+    { path: `${projectName}/02_STATIC/ASSET_placeholder.txt`, content: '# Use ASSET_ prefix for all asset files' },
+    { path: `${projectName}/02_STATIC/TEMPLATE_base.html`, content: '<!-- TEMPLATE_ prefix for templates -->' },
+    { path: `${projectName}/02_STATIC/CONFIG_theme.json`, content: '{"theme":"default"}' },
+    { path: `${projectName}/03_ACTIVE/.gitkeep`, content: '' },
+    { path: `${projectName}/04_TEST/001_TEST_Main_Unit_COMMON.test.js`, content: '// Test file with indexed naming\n// [Deps]: 001\n' },
+    { 
+      path: `${projectName}/.ai_instructions.md`, 
+      content: `# AI Development Instructions (v5.0.1 ChatGPT Enhanced)\n\n## ⚠️ Folder Permissions\n- 00_DOCS: NO-MODIFY\n- 01_CONFIG: NO-MODIFY - CRITICAL\n- 02_STATIC: Use ASSET_, TEMPLATE_, CONFIG_ prefixes\n- 03_ACTIVE: Full access (primary workspace)\n- 04_TEST: Use indexed naming (001_TEST_*)\n\n## [Deps] Dependency Markers\n- Sequential: 001-1, 001-2\n- Parallel: 001a, 001b\n- Subordinate: 001s1, 001s2\n- None: Entry point`
+    }
+  ];
+  
+  // 전체 생성 명령 (Windows/Unix)
+  structure.createCommand = {
+    windows: structure.commands.join(' && '),
+    unix: structure.commands.join(' && ')
+  };
+  
+  return {
+    ...structure,
+    message: msg.v5?.projectCreated || 'Project structure created with 7 standard folders'
+  };
+}
+
+// 2. 폴더 권한 체크 도구
+export async function checkFolderPermission({ folder, operation = 'modify' }) {
+  const msg = getMessages();
+  const rules = namingRules();
+  
+  const folderInfo = rules.standardFolders[folder];
+  
+  if (!folderInfo) {
+    return {
+      valid: false,
+      error: `Unknown folder: ${folder}`,
+      suggestion: 'Use one of: 00_DOCS, 01_CONFIG, 02_STATIC, 03_ACTIVE, 04_TEST, 05_BUILD, 06_LOGS'
+    };
+  }
+  
+  const permissions = {
+    '00_DOCS': { read: true, write: false, modify: false, delete: false },
+    '01_CONFIG': { read: true, write: false, modify: false, delete: false },
+    '02_STATIC': { read: true, write: true, modify: false, delete: false },
+    '03_ACTIVE': { read: true, write: true, modify: true, delete: true },
+    '04_TEST': { read: true, write: true, modify: true, delete: false },
+    '05_BUILD': { read: true, write: true, modify: false, delete: true },
+    '06_LOGS': { read: true, write: true, modify: false, delete: false }
+  };
+  
+  const permission = permissions[folder][operation];
+  
+  return {
+    folder,
+    operation,
+    allowed: permission,
+    aiPermission: folderInfo.aiPermission,
+    description: folderInfo.description,
+    message: permission 
+      ? `AI can ${operation} in ${folder}`
+      : `AI cannot ${operation} in ${folder} (${folderInfo.aiPermission})`
+  };
+}
+
+// 3. v4에서 v5로 마이그레이션 도구
+export async function migrateFromV4({ 
+  sourcePath = '.', 
+  dryRun = true 
+}) {
+  const msg = getMessages();
+  const rules = namingRules();
+  
+  const migration = {
+    version: 'v4 → v5',
+    steps: [],
+    commands: [],
+    fileMovements: []
+  };
+  
+  // 마이그레이션 매핑
+  const folderMapping = {
+    'docs': '00_DOCS',
+    'documentation': '00_DOCS',
+    'README.md': '00_DOCS',
+    'config': '01_CONFIG',
+    'settings': '01_CONFIG',
+    '.env': '01_CONFIG',
+    'public': '02_STATIC',
+    'static': '02_STATIC',
+    'assets': '02_STATIC',
+    'src': '03_ACTIVE',
+    'lib': '03_ACTIVE',
+    'app': '03_ACTIVE',
+    'test': '04_TEST',
+    'tests': '04_TEST',
+    'spec': '04_TEST',
+    'dist': '05_BUILD',
+    'build': '05_BUILD',
+    'out': '05_BUILD',
+    'logs': '06_LOGS',
+    'log': '06_LOGS'
+  };
+  
+  // Step 1: 폴더 생성
+  migration.steps.push({
+    step: 1,
+    action: 'Create 7 standard folders',
+    commands: Object.keys(rules.standardFolders).map(f => `mkdir ${f}`)
+  });
+  
+  // Step 2: 파일 이동 계획
+  for (const [oldPath, newFolder] of Object.entries(folderMapping)) {
+    migration.fileMovements.push({
+      from: oldPath,
+      to: newFolder,
+      command: `mv ${oldPath}/* ${newFolder}/`
+    });
+  }
+  
+  // Step 3: 파일명 변환 (03_ACTIVE 내부)
+  migration.steps.push({
+    step: 2,
+    action: 'Convert file names in 03_ACTIVE',
+    description: 'Apply v5 naming convention to all active code files'
+  });
+  
+  // 마이그레이션 스크립트 생성
+  if (!dryRun) {
+    migration.executeScript = migration.fileMovements
+      .map(m => m.command)
+      .join('\n');
+  }
+  
+  return {
+    ...migration,
+    dryRun,
+    message: dryRun 
+      ? msg.v5?.migrationPlan || 'Migration plan created (dry run)'
+      : msg.v5?.migrationExecuted || 'Migration executed successfully'
+  };
+}
+
+// 4. 파일 폴더 제안 도구
+export async function suggestFolder({ 
+  fileName, 
+  fileType,
+  content 
+}) {
+  const msg = getMessages();
+  const rules = namingRules();
+  
+  // 파일 유형별 폴더 매핑
+  const typeMapping = {
+    'documentation': '00_DOCS',
+    'readme': '00_DOCS',
+    'guide': '00_DOCS',
+    'config': '01_CONFIG',
+    'env': '01_CONFIG',
+    'secret': '01_CONFIG',
+    'image': '02_STATIC',
+    'font': '02_STATIC',
+    'template': '02_STATIC',
+    'css': '02_STATIC',
+    'code': '03_ACTIVE',
+    'component': '03_ACTIVE',
+    'service': '03_ACTIVE',
+    'api': '03_ACTIVE',
+    'test': '04_TEST',
+    'spec': '04_TEST',
+    'e2e': '04_TEST',
+    'build': '05_BUILD',
+    'dist': '05_BUILD',
+    'bundle': '05_BUILD',
+    'log': '06_LOGS',
+    'error': '06_LOGS',
+    'audit': '06_LOGS'
+  };
+  
+  // 확장자별 폴더 매핑
+  const extensionMapping = {
+    'md': '00_DOCS',
+    'txt': '00_DOCS',
+    'yml': '01_CONFIG',
+    'yaml': '01_CONFIG',
+    'env': '01_CONFIG',
+    'png': '02_STATIC',
+    'jpg': '02_STATIC',
+    'svg': '02_STATIC',
+    'js': '03_ACTIVE',
+    'jsx': '03_ACTIVE',
+    'ts': '03_ACTIVE',
+    'tsx': '03_ACTIVE',
+    'py': '03_ACTIVE',
+    'java': '03_ACTIVE',
+    'test.js': '04_TEST',
+    'spec.js': '04_TEST',
+    'min.js': '05_BUILD',
+    'bundle.js': '05_BUILD',
+    'log': '06_LOGS'
+  };
+  
+  let suggestedFolder = '03_ACTIVE'; // 기본값
+  let reason = 'Default for active code';
+  
+  // 파일명 분석
+  if (fileName) {
+    const ext = fileName.split('.').pop().toLowerCase();
+    
+    // v5 네이밍 패턴 체크
+    if (/^[0-9]{3}_[A-Z]{2,6}_/.test(fileName)) {
+      suggestedFolder = '03_ACTIVE';
+      reason = 'Follows v5 naming convention';
+    } else if (extensionMapping[ext]) {
+      suggestedFolder = extensionMapping[ext];
+      reason = `Based on extension: .${ext}`;
+    } else if (fileName.includes('test') || fileName.includes('spec')) {
+      suggestedFolder = '04_TEST';
+      reason = 'Test file detected';
+    } else if (fileName.includes('config') || fileName.includes('settings')) {
+      suggestedFolder = '01_CONFIG';
+      reason = 'Configuration file detected';
+    }
+  }
+  
+  // 파일 타입으로 결정
+  if (fileType && typeMapping[fileType.toLowerCase()]) {
+    suggestedFolder = typeMapping[fileType.toLowerCase()];
+    reason = `Based on file type: ${fileType}`;
+  }
+  
+  const folderInfo = rules.standardFolders[suggestedFolder];
+  
+  return {
+    fileName,
+    suggestedFolder,
+    reason,
+    folderInfo: {
+      name: folderInfo.name,
+      description: folderInfo.description,
+      aiPermission: folderInfo.aiPermission,
+      namingRuleRequired: folderInfo.namingRuleRequired
+    },
+    alternativeFolders: Object.keys(rules.standardFolders).filter(f => f !== suggestedFolder),
+    message: msg.v5?.folderSuggested || `Suggested folder: ${suggestedFolder} - ${reason}`
+  };
+}
+
+// ========== 🆕 v6.0.0 Tools Export ==========
+export {
+  createAIRoleMatrix,
+  getAIRole,
+  naturalLanguageToFileName,
+  addNamingWizardRule,
+  generateDepGraph,
+  validateDeps,
+  checkCircularDeps,
+  logHumanOverride,
+  scanProject,
+  exportConfig
+} from './v6-tools.js';

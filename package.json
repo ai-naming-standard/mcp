@@ -1,11 +1,13 @@
 {
   "name": "ai-naming-standard-mcp",
-  "version": "1.0.6",
-  "description": "Zero-Folderization MCP: Revolutionary naming convention enabling AI-human collaboration by encoding complete context into filenames, eliminating folder dependencies. AI can read filenames as grammar; non-developers use them as instruction language. Operational pact for autonomous development with 70% faster maintenance and 80% error reduction.",
+  "version": "6.0.2",
+  "description": "AI Governance Era: Multi-AI Orchestration with 07_META folder, Naming Wizard (natural language conversion), @deps dependency graph, complete governance layer, and AI role differentiation. Revolutionary standard for AI collaboration.",
   "keywords": [
-    "zero-folderization",
-    "ai-human-collaboration",
-    "folder-less",
+    "ai-governance",
+    "multi-ai-collaboration",
+    "naming-wizard",
+    "dependency-graph",
+    "ai-orchestration",
     "mcp",
     "mcp-server",
     "modelcontextprotocol",
@@ -15,6 +17,8 @@
     "claude",
     "claude-desktop",
     "cursor",
+    "chatgpt",
+    "windsurf",
     "ai-development",
     "coding-standards",
     "automation",
@@ -25,15 +29,18 @@
     "self-documenting",
     "knowledge-persistence",
     "ai-readable",
-    "operational-pact"
+    "governance",
+    "audit-trail",
+    "natural-language",
+    "ainaming-cli"
   ],
   "homepage": "https://ai-naming-standard.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ai-naming-standard/mcp.git"
+    "url": "git+https://github.com/ai-naming-standard/v6.git"
   },
   "bugs": {
-    "url": "https://github.com/ai-naming-standard/mcp/issues"
+    "url": "https://github.com/ai-naming-standard/v6/issues"
   },
   "author": {
     "name": "AI Naming Standard Organization",
@@ -41,20 +48,31 @@
   },
   "contributors": [
     {
-      "name": "AI Naming Standard Contributors"
+      "name": "Hyun Seok Yang",
+      "role": "v5.0.2 Foundation"
+    },
+    {
+      "name": "AI Naming Standard Contributors",
+      "role": "v6.0.0 Evolution"
     }
   ],
   "license": "MIT",
   "type": "module",
   "main": "src/index.js",
   "bin": {
-    "ai-naming-standard-mcp": "./bin/start.js"
+    "ai-naming-standard-mcp": "./bin/start.js",
+    "ainaming": "./bin/ainaming.js"
   },
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "node test/index.js"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^0.6.0"
+    "@modelcontextprotocol/sdk": "^0.6.0",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -69,6 +87,30 @@
     "capabilities": [
       "tools",
       "resources"
+    ],
+    "version": "6.0.0",
+    "features": [
+      "multi-ai-orchestration",
+      "naming-wizard",
+      "dependency-graph",
+      "governance-layer",
+      "role-differentiation",
+      "natural-language-conversion",
+      "audit-trail",
+      "meta-templates"
+    ]
+  },
+  "ainaming": {
+    "cli_version": "6.0.0",
+    "commands": [
+      "init",
+      "add",
+      "deps",
+      "sync",
+      "validate",
+      "export",
+      "upgrade",
+      "scan"
     ]
   }
 }

@@ -1,5 +1,8 @@
 // 日本語メッセージ
 export const messages = {
+  // バージョン情報
+  version: '5.0',
+  architecture: 'スマートフォルダー化(Smart-Folderization)',
   // ツール説明
   tools: {
     generateFileName: {
@@ -203,8 +206,39 @@ export const messages = {
 
   // サーバーメッセージ
   server: {
-    started: 'AI Naming Standard MCPサーバーが正常に起動しました',
+    started: 'AI Naming Standard MCPサーバー v5.0 (スマートフォルダー化) が正常に起動しました',
     error: 'エラー'
+  },
+
+  // v5専用メッセージ
+  v5: {
+    projectCreated: '7つの標準フォルダでプロジェクト構造を作成しました',
+    folderSuggested: 'ファイル分析に基づいてフォルダを提案しました',
+    migrationPlan: 'v4からv5への移行計画を作成しました（テスト実行）',
+    migrationExecuted: 'v5移行が正常に実行されました',
+    smartFolderization: 'スマートフォルダー化: 最小フォルダ、ファイル名に最大コンテキスト'
+  },
+
+  // フォルダ説明
+  folders: {
+    '00_DOCS': 'ドキュメント（AI読み取り専用）',
+    '01_CONFIG': '設定（AI修正禁止）',
+    '02_STATIC': '静的リソース（AI読み取り/追加）',
+    '03_ACTIVE': 'アクティブコード（AI完全アクセス）',
+    '04_TEST': 'テスト（AI作成/修正）',
+    '05_BUILD': 'ビルド出力（AI作成専用）',
+    '06_LOGS': 'ログ（AI書き込み専用）'
+  },
+
+  // AI権限
+  aiPermissions: {
+    'read-only': '読み取りのみ可能',
+    'no-modify': '修正不可',
+    'read-add': '読み取りおよび追加可能',
+    'full-access': 'すべての操作権限',
+    'create-modify': '作成および修正可能',
+    'create-only': '作成のみ可能',
+    'write-only': '書き込み/追加のみ可能'
   }
 };
 

@@ -1,0 +1,392 @@
+# Naming Wizard Rules
+# Location: 07_META/NAMING_WIZARD_RULES.yaml
+# Purpose: Rules for automatically converting natural language to file names
+
+version: "6.0.0"
+updated: "2025-10-17"
+language: "en"  # en, ko, ja, zh support planned
+
+# ============================================
+# Domain Mapping
+# ============================================
+
+domainMapping:
+  # === User Related ===
+  - keywords: ["login", "signin", "auth", "authentication"]
+    domain: "User-Login"
+    layer_hint: "FE + BE"
+  
+  - keywords: ["register", "signup", "sign up", "registration"]
+    domain: "User-Register"
+    layer_hint: "FE + BE + DB"
+  
+  - keywords: ["profile", "account", "my info", "user info"]
+    domain: "User-Profile"
+    layer_hint: "FE + BE"
+  
+  - keywords: ["password", "pwd", "credential"]
+    domain: "User-Password"
+    layer_hint: "BE"
+  
+  - keywords: ["logout", "signout", "sign out"]
+    domain: "User-Logout"
+    layer_hint: "FE + BE"
+
+  # === Product Related ===
+  - keywords: ["product", "item", "goods", "merchandise"]
+    domain: "Product"
+    layer_hint: "all"
+  
+  - keywords: ["search", "find", "query", "lookup"]
+    feature: "Search"
+    detail_hint: "API"
+  
+  - keywords: ["list", "listings", "catalog"]
+    feature: "List"
+    detail_hint: "Page"
+  
+  - keywords: ["detail", "details", "information", "info"]
+    feature: "Detail"
+    detail_hint: "Page"
+  
+  - keywords: ["category", "classification", "type"]
+    feature: "Category"
+    detail_hint: "Component"
+
+  # === Order Related ===
+  - keywords: ["order", "ordering", "purchase", "buy"]
+    domain: "Order"
+    layer_hint: "all"
+  
+  - keywords: ["cart", "basket", "shopping cart"]
+    domain: "Cart"
+    layer_hint: "FE + BE"
+  
+  - keywords: ["checkout", "payment", "pay", "billing"]
+    domain: "Payment"
+    layer_hint: "all"
+  
+  - keywords: ["cancel", "refund", "return"]
+    feature: "Refund"
+    detail_hint: "Service"
+  
+  - keywords: ["delivery", "shipping", "dispatch"]
+    feature: "Delivery"
+    detail_hint: "Service"
+
+  # === Review Related ===
+  - keywords: ["review", "rating", "feedback"]
+    domain: "Review"
+    layer_hint: "FE + BE + DB"
+  
+  - keywords: ["comment", "remarks"]
+    domain: "Comment"
+    layer_hint: "FE + BE"
+
+  # === Admin Related ===
+  - keywords: ["admin", "manage", "management"]
+    domain: "Admin"
+    layer_hint: "FE + BE"
+  
+  - keywords: ["dashboard", "home", "overview"]
+    feature: "Dashboard"
+    detail_hint: "Page"
+  
+  - keywords: ["analytics", "stats", "statistics", "metrics"]
+    feature: "Analytics"
+    detail_hint: "Page"
+
+# ============================================
+# Action Mapping
+# ============================================
+
+actionMapping:
+  # Create
+  - keywords: ["create", "add", "new", "insert", "write", "make"]
+    action: "C"
+    detail_hint: "Service"
+  
+  # Read
+  - keywords: ["read", "get", "view", "fetch", "find", "show", "display", "retrieve"]
+    action: "R"
+    detail_hint: "API"
+  
+  # Update
+  - keywords: ["update", "edit", "modify", "change", "alter", "patch"]
+    action: "U"
+    detail_hint: "Service"
+  
+  # Delete
+  - keywords: ["delete", "remove", "erase", "drop", "destroy"]
+    action: "D"
+    detail_hint: "Service"
+  
+  # Validate
+  - keywords: ["validate", "check", "verify", "validation"]
+    action: "V"
+    detail_hint: "Validator"
+  
+  # Execute
+  - keywords: ["execute", "process", "run", "perform", "handle"]
+    action: "X"
+    detail_hint: "Service"
+  
+  # Send
+  - keywords: ["send", "transmit", "dispatch", "submit", "deliver"]
+    action: "S"
+    detail_hint: "Service"
+  
+  # Transform
+  - keywords: ["transform", "convert", "translate", "parse"]
+    action: "T"
+    detail_hint: "Helper"
+  
+  # Generate
+  - keywords: ["generate", "produce", "build", "compile"]
+    action: "G"
+    detail_hint: "Helper"
+
+# ============================================
+# Layer Mapping
+# ============================================
+
+layerMapping:
+  # Frontend
+  - keywords: ["frontend", "client", "view", "ui", "page", "component",
+              "react", "vue", "angular", "screen", "interface"]
+    layer: "FE"
+  
+  # Backend
+  - keywords: ["backend", "server", "api", "business", "logic", "service",
+              "node", "python", "java", "spring", "django", "express"]
+    layer: "BE"
+  
+  # Database
+  - keywords: ["database", "db", "table", "schema", "query",
+              "mysql", "mongo", "postgres", "sql"]
+    layer: "DB"
+  
+  # API Gateway
+  - keywords: ["gateway", "api", "rest", "graphql", "endpoint"]
+    layer: "API"
+  
+  # Machine Learning
+  - keywords: ["ml", "ai", "machine learning", "model", "training",
+              "tensorflow", "pytorch", "neural"]
+    layer: "ML"
+  
+  # Infrastructure
+  - keywords: ["infra", "infrastructure", "deploy", "docker", "kubernetes",
+              "k8s", "ci", "cd", "devops"]
+    layer: "INFRA"
+  
+  # Shared
+  - keywords: ["shared", "common", "util", "helper", "utility"]
+    layer: "SH"
+
+# ============================================
+# Detail Mapping
+# ============================================
+
+detailMapping:
+  # UI Related
+  - keywords: ["page", "view", "screen"]
+    detail: "Page"
+    layer_compatible: ["FE"]
+  
+  - keywords: ["component", "widget", "element"]
+    detail: "Component"
+    layer_compatible: ["FE"]
+  
+  - keywords: ["layout", "template"]
+    detail: "Layout"
+    layer_compatible: ["FE"]
+  
+  - keywords: ["modal", "popup", "dialog"]
+    detail: "Modal"
+    layer_compatible: ["FE"]
+
+  # Backend Related
+  - keywords: ["service", "business", "logic"]
+    detail: "Service"
+    layer_compatible: ["BE"]
+  
+  - keywords: ["controller", "handler", "router"]
+    detail: "Controller"
+    layer_compatible: ["BE", "API"]
+  
+  - keywords: ["repository", "dao", "data"]
+    detail: "Repository"
+    layer_compatible: ["BE"]
+  
+  - keywords: ["middleware", "interceptor"]
+    detail: "Middleware"
+    layer_compatible: ["BE", "API"]
+  
+  - keywords: ["helper", "util", "utility"]
+    detail: "Helper"
+    layer_compatible: ["BE", "SH"]
+  
+  - keywords: ["validator", "validation"]
+    detail: "Validator"
+    layer_compatible: ["BE"]
+  
+  - keywords: ["mapper", "converter"]
+    detail: "Mapper"
+    layer_compatible: ["BE"]
+
+  # API Related
+  - keywords: ["api", "endpoint", "route"]
+    detail: "API"
+    layer_compatible: ["BE", "API"]
+
+  # Database Related
+  - keywords: ["table", "schema"]
+    detail: "Table"
+    layer_compatible: ["DB"]
+  
+  - keywords: ["migration", "ddl"]
+    detail: "Migration"
+    layer_compatible: ["DB"]
+  
+  - keywords: ["query", "sql"]
+    detail: "Query"
+    layer_compatible: ["DB"]
+
+# ============================================
+# Environment Mapping
+# ============================================
+
+envMapping:
+  - keywords: ["dev", "development", "local"]
+    env: "DEV"
+  
+  - keywords: ["test", "testing", "staging", "stg"]
+    env: "STG"
+  
+  - keywords: ["prod", "production", "deploy", "live"]
+    env: "PROD"
+  
+  - keywords: ["common", "all", "shared"]
+    env: "COMMON"
+  
+  - default: "PROD"  # default value
+
+# ============================================
+# Complex Patterns
+# ============================================
+
+complexPatterns:
+  # "user registration page"
+  - input_pattern: ["user", "registration", "page"]
+    output:
+      domain: "User-Register"
+      action: "C"
+      layer: "FE"
+      detail: "Page"
+      env: "PROD"
+  
+  # "product search API"
+  - input_pattern: ["product", "search", "api"]
+    output:
+      domain: "Product-Search"
+      action: "R"
+      layer: "BE"
+      detail: "API"
+      env: "PROD"
+  
+  # "order processing service"
+  - input_pattern: ["order", "processing", "service"]
+    output:
+      domain: "Order-Process"
+      action: "X"
+      layer: "BE"
+      detail: "Service"
+      env: "PROD"
+
+# ============================================
+# Auto Index Assignment Rules
+# ============================================
+
+indexAssignment:
+  # Starting numbers by layer
+  layer_ranges:
+    FE: 
+      start: 1
+      increment: 1
+    BE: 
+      start: 100
+      increment: 1
+    DB: 
+      start: 200
+      increment: 1
+    API: 
+      start: 300
+      increment: 1
+    ML: 
+      start: 400
+      increment: 1
+    INFRA: 
+      start: 500
+      increment: 1
+    SH: 
+      start: 600
+      increment: 1
+  
+  # Auto assignment strategy
+  strategy: "auto"  # auto, manual, sequential
+  
+  # Conflict handling
+  on_conflict: "suggest_alternative"  # suggest_alternative, increment, ask_user
+
+# ============================================
+# Usage Examples
+# ============================================
+
+examples:
+  - input: "create login page"
+    analysis:
+      domain: "User-Login"
+      action: "C"
+      layer: "FE"
+      detail: "Page"
+      env: "PROD"
+    output: "001_FE_User-Login_C_Page_PROD.jsx"
+  
+  - input: "add payment refund feature"
+    analysis:
+      domain: "Payment-Refund"
+      action: "C"
+      layer: "BE"
+      detail: "Service"
+      env: "PROD"
+    output: "101_BE_Payment-Refund_C_Service_PROD.py"
+  
+  - input: "product search React component"
+    analysis:
+      domain: "Product-Search"
+      action: "R"
+      layer: "FE"
+      detail: "Component"
+      env: "PROD"
+    output: "002_FE_Product-Search_R_Component_PROD.jsx"
+  
+  - input: "create order table"
+    analysis:
+      domain: "Order"
+      action: "C"
+      layer: "DB"
+      detail: "Table"
+      env: "COMMON"
+    output: "201_DB_Order_C_Table_COMMON.sql"
+
+# ============================================
+# Custom Rules Addition
+# ============================================
+
+# You can add custom rules per project.
+# Example:
+# customDomains:
+#   - keywords: ["reservation", "booking"]
+#     domain: "Reservation"
+#     layer_hint: "all"

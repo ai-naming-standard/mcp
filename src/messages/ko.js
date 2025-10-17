@@ -1,5 +1,8 @@
 // 한국어 메시지
 export const messages = {
+  // 버전 정보
+  version: '5.0',
+  architecture: '스마트 폴더화(Smart-Folderization)',
   // 도구 설명
   tools: {
     generateFileName: {
@@ -203,8 +206,39 @@ export const messages = {
 
   // 서버 메시지
   server: {
-    started: 'AI Naming Standard MCP 서버가 성공적으로 시작되었습니다',
+    started: 'AI Naming Standard MCP 서버 v5.0 (스마트 폴더화) 가 성공적으로 시작되었습니다',
     error: '오류'
+  },
+
+  // v5 전용 메시지
+  v5: {
+    projectCreated: '7개 표준 폴더로 프로젝트 구조 생성 완료',
+    folderSuggested: '파일 분석을 통해 폴더 제안됨',
+    migrationPlan: 'v4에서 v5로의 마이그레이션 계획 생성 (테스트 실행)',
+    migrationExecuted: 'v5 마이그레이션 성공적으로 실행됨',
+    smartFolderization: '스마트 폴더화: 최소 폴더, 파일명에 최대 컨텍스트'
+  },
+
+  // 폴더 설명
+  folders: {
+    '00_DOCS': '문서 (AI 읽기 전용)',
+    '01_CONFIG': '설정 (AI 수정 금지)',
+    '02_STATIC': '정적 자원 (AI 읽기/추가)',
+    '03_ACTIVE': '활성 코드 (AI 전체 권한)',
+    '04_TEST': '테스트 (AI 생성/수정)',
+    '05_BUILD': '빌드 결과물 (AI 생성 전용)',
+    '06_LOGS': '로그 (AI 쓰기 전용)'
+  },
+
+  // AI 권한
+  aiPermissions: {
+    'read-only': '읽기만 가능',
+    'no-modify': '수정 불가',
+    'read-add': '읽기 및 추가 가능',
+    'full-access': '모든 작업 권한',
+    'create-modify': '생성 및 수정 가능',
+    'create-only': '생성만 가능',
+    'write-only': '쓰기/추가만 가능'
   }
 };
 
