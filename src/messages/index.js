@@ -2,9 +2,10 @@
 import koMessages from './ko.js';
 import enMessages from './en.js';
 import jaMessages from './ja.js';
+import zhMessages from './zh.js';
 
 // 지원 언어 목록
-export const SUPPORTED_LANGUAGES = ['ko', 'en', 'ja'];
+export const SUPPORTED_LANGUAGES = ['ko', 'en', 'ja', 'zh'];
 
 // 기본 언어
 export const DEFAULT_LANGUAGE = 'en';
@@ -13,7 +14,8 @@ export const DEFAULT_LANGUAGE = 'en';
 const messageMap = {
   ko: koMessages,
   en: enMessages,
-  ja: jaMessages
+  ja: jaMessages,
+  zh: zhMessages
 };
 
 // 현재 언어 (환경 변수 또는 기본값)

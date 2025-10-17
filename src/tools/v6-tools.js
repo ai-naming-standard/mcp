@@ -144,6 +144,91 @@ export async function naturalLanguageToFileName({ naturalLanguage, language = 'k
       '서비스': 'BE_Service',
       'API': 'BE_API',
       '테이블': 'DB_Table'
+    },
+    en: {
+      // Domain
+      'login': 'User-Login',
+      'register': 'User-Register',
+      'signup': 'User-Register',
+      'profile': 'User-Profile',
+      'product': 'Product',
+      'search': 'Search',
+      'payment': 'Payment',
+      'order': 'Order',
+      'refund': 'Refund',
+      // Action
+      'create': 'C',
+      'add': 'C',
+      'new': 'C',
+      'get': 'R',
+      'read': 'R',
+      'view': 'R',
+      'update': 'U',
+      'edit': 'U',
+      'modify': 'U',
+      'delete': 'D',
+      'remove': 'D',
+      // Layer
+      'page': 'FE_Page',
+      'component': 'FE_Component',
+      'service': 'BE_Service',
+      'api': 'BE_API',
+      'table': 'DB_Table'
+    },
+    ja: {
+      // ドメイン
+      'ログイン': 'User-Login',
+      '登録': 'User-Register',
+      '会員登録': 'User-Register',
+      'プロフィール': 'User-Profile',
+      '商品': 'Product',
+      '検索': 'Search',
+      '決済': 'Payment',
+      '注文': 'Order',
+      '返金': 'Refund',
+      // アクション
+      '作成': 'C',
+      '生成': 'C',
+      '追加': 'C',
+      '取得': 'R',
+      '閲覧': 'R',
+      '更新': 'U',
+      '修正': 'U',
+      '削除': 'D',
+      // レイヤー
+      'ページ': 'FE_Page',
+      'コンポーネント': 'FE_Component',
+      'サービス': 'BE_Service',
+      'API': 'BE_API',
+      'テーブル': 'DB_Table'
+    },
+    zh: {
+      // 域
+      '登录': 'User-Login',
+      '注册': 'User-Register',
+      '会员注册': 'User-Register',
+      '个人资料': 'User-Profile',
+      '商品': 'Product',
+      '搜索': 'Search',
+      '支付': 'Payment',
+      '订单': 'Order',
+      '退款': 'Refund',
+      // 操作
+      '创建': 'C',
+      '生成': 'C',
+      '添加': 'C',
+      '获取': 'R',
+      '查看': 'R',
+      '查询': 'R',
+      '更新': 'U',
+      '修改': 'U',
+      '删除': 'D',
+      // 层
+      '页面': 'FE_Page',
+      '组件': 'FE_Component',
+      '服务': 'BE_Service',
+      'API': 'BE_API',
+      '表': 'DB_Table'
     }
   };
 
