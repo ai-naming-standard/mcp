@@ -483,12 +483,20 @@ my-project/
 
 ## 🌐 Internationalization
 
+**All languages are fully supported!** 🌍
+
 | Language | Status | Naming Wizard | Documentation |
 |----------|--------|---------------|---------------|
 | English | ✅ Full | ✅ Supported | ✅ Complete |
 | 한국어 (Korean) | ✅ Full | ✅ Supported | ✅ Complete |
 | 日本語 (Japanese) | ✅ Full | ✅ Supported | ✅ Complete |
 | 中文 (Chinese) | ✅ Full | ✅ Supported | ✅ Complete |
+
+**Documentation Links:**
+- 📖 [English Documentation](https://github.com/ai-naming-standard/mcp/tree/main/docs/EN)
+- 📖 [한국어 문서](https://github.com/ai-naming-standard/mcp/tree/main/docs/KR)
+- 📖 [日本語ドキュメント](https://github.com/ai-naming-standard/mcp/tree/main/docs/JP)
+- 📖 [中文文档](https://github.com/ai-naming-standard/mcp/tree/main/docs/CN)
 
 ---
 

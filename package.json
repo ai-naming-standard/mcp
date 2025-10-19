@@ -1,7 +1,7 @@
 {
   "name": "ai-naming-standard-mcp",
   "version": "6.0.7",
-  "description": "AI Governance Era: Multi-AI Orchestration with 07_META folder, Naming Wizard (natural language conversion), @deps dependency graph, complete governance layer, and AI role differentiation. Revolutionary standard for AI collaboration.",
+  "description": "AI Governance Era: Multi-AI Orchestration with 07_META folder, Naming Wizard (natural language conversion), @deps dependency graph, complete governance layer, and AI role differentiation. Revolutionary standard for AI collaboration. Full support for English, Korean, Japanese, and Chinese.",
   "keywords": [
     "ai-governance",
     "multi-ai-collaboration",
@@ -26,6 +26,10 @@
     "project-structure",
     "multi-language",
     "i18n",
+    "chinese",
+    "korean",
+    "japanese",
+    "multilingual",
     "self-documenting",
     "knowledge-persistence",
     "ai-readable",
