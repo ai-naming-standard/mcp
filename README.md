@@ -551,18 +551,10 @@ Found a bug? Please report it on [GitHub Issues](https://github.com/ai-naming-st
 
 ---
 
-## 💬 Community & Support
+## 💬 Contact
 
 ### Need Help?
-- 💬 [Discord Community](https://discord.gg/ai-naming-standard)
-- 📧 [Email Support](mailto:support@ai-naming-standard.org)
-- 🐛 [GitHub Issues](https://github.com/ai-naming-standard/v6/issues)
-- 💼 [LinkedIn](https://linkedin.com/company/ai-naming-standard)
-
-### Follow Us
-- 🐦 [Twitter](https://twitter.com/ai_naming_std)
-- 📘 [Facebook](https://facebook.com/ai-naming-standard)
-- 📺 [YouTube](https://youtube.com/@ai-naming-standard)
+📧 **Email**: [omskykhal@gmail.com](mailto:omskykhal@gmail.com)
 
 ---
 

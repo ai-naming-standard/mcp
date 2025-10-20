@@ -551,18 +551,10 @@ npm run dev
 
 ---
 
-## 💬 社区和支持
+## 💬 联系方式
 
 ### 需要帮助?
-- 💬 [Discord 社区](https://discord.gg/ai-naming-standard)
-- 📧 [电子邮件支持](mailto:support@ai-naming-standard.org)
-- 🐛 [GitHub Issues](https://github.com/ai-naming-standard/v6/issues)
-- 💼 [LinkedIn](https://linkedin.com/company/ai-naming-standard)
-
-### 关注我们
-- 🐦 [Twitter](https://twitter.com/ai_naming_std)
-- 📘 [Facebook](https://facebook.com/ai-naming-standard)
-- 📺 [YouTube](https://youtube.com/@ai-naming-standard)
+📧 **电子邮件**: [omskykhal@gmail.com](mailto:omskykhal@gmail.com)
 
 ---
 

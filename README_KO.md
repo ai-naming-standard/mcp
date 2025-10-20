@@ -544,18 +544,10 @@ npm run dev
 
 ---
 
-## 💬 커뮤니티 & 지원
+## 💬 연락처
 
 ### 도움이 필요하신가요?
-- 💬 [Discord Community](https://discord.gg/ai-naming-standard)
-- 📧 [Email Support](mailto:support@ai-naming-standard.org)
-- 🐛 [GitHub Issues](https://github.com/ai-naming-standard/v6/issues)
-- 💼 [LinkedIn](https://linkedin.com/company/ai-naming-standard)
-
-### 팔로우하기
-- 🐦 [Twitter](https://twitter.com/ai_naming_std)
-- 📘 [Facebook](https://facebook.com/ai-naming-standard)
-- 📺 [YouTube](https://youtube.com/@ai-naming-standard)
+📧 **이메일**: [omskykhal@gmail.com](mailto:omskykhal@gmail.com)
 
 ---
 
