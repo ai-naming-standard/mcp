@@ -580,21 +580,4 @@ copies or substantial portions of the Software.
 
 ---
 
-## 🙏 Acknowledgments
-
-v6.0.0 was made possible by:
-
-### Core Contributors
-- **Hyun Seok Yang** - v5.0.2 FINAL foundation, architecture design
-- **AI Community Contributors** - Multi-AI collaboration ideas
-- **Beta Testers** - v6 early validation and feedback
-
-### Special Thanks
-- Model Context Protocol Team
-- Claude AI Team
-- Cursor Team
-- Open Source Community
-
----
-
 ## 📜 License

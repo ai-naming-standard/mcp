@@ -577,19 +577,4 @@ Copyright (c) 2025 AI Naming Standard Organization
 
 ---
 
-## 🙏 致谢
-
-v6.0.0 的实现得益于:
-
-### 核心贡献者
-- **Hyun Seok Yang** - v5.0.2 FINAL 基础, 架构设计
-- **AI 社区贡献者** - 多AI协作理念
-- **Beta 测试者** - v6 早期验证和反馈
-
-### 特别感谢
-- Model Context Protocol 团队
-- Claude AI 团队
-- Cursor 团队
-- 开源社区
-
----
+---`n`n

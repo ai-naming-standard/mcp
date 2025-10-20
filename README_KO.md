@@ -573,19 +573,4 @@ copies or substantial portions of the Software.
 
 ---
 
-## 🙏 감사의 말
-
-v6.0.0은 다음 분들의 기여로 완성되었습니다:
-
-### 핵심 기여자
-- **Hyun Seok Yang** - v5.0.2 FINAL 기반 제공, 아키텍처 설계
-- **AI Community Contributors** - Multi-AI 협업 아이디어 제공
-- **Beta Testers** - v6 초기 검증 및 피드백
-
-### 스페셜 땡스
-- Model Context Protocol Team
-- Claude AI Team
-- Cursor Team
-- Open Source Community
-
----
+---`n`n
