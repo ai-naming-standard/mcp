@@ -1,4 +1,4 @@
-# 🚀 AI Naming Standard MCP v6.0.0
+﻿# 🚀 AI Naming Standard MCP v6.0.0
 
 > **AI Governance Era**: Revolutionary Multi-AI Orchestration with Natural Language Support
 
@@ -89,7 +89,7 @@ npm install ai-naming-standard-mcp
 
 ### From Source
 ```bash
-git clone https://github.com/ai-naming-standard/v6.git
+git clone https://github.com/ai-naming-standard/mcp.git
 cd v6
 npm install
 npm link
@@ -529,7 +529,7 @@ Bug reports, feature requests, and Pull Requests are welcome!
 
 ### Development Setup
 ```bash
-git clone https://github.com/ai-naming-standard/v6.git
+git clone https://github.com/ai-naming-standard/mcp.git
 cd v6
 npm install
 npm run dev
@@ -539,7 +539,7 @@ npm run dev
 
 ## 🐛 Bug Reports
 
-Found a bug? Please report it on [GitHub Issues](https://github.com/ai-naming-standard/v6/issues)!
+Found a bug? Please report it on [GitHub Issues](https://github.com/ai-naming-standard/mcp/issues)!
 
 **Please include:**
 - Bug description

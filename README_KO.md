@@ -89,7 +89,7 @@ npm install ai-naming-standard-mcp
 
 ### From Source
 ```bash
-git clone https://github.com/ai-naming-standard/v6.git
+git clone https://github.com/ai-naming-standard/mcp.git
 cd v6
 npm install
 npm link
@@ -522,7 +522,7 @@ my-project/
 
 ### 개발 환경 설정
 ```bash
-git clone https://github.com/ai-naming-standard/v6.git
+git clone https://github.com/ai-naming-standard/mcp.git
 cd v6
 npm install
 npm run dev
@@ -532,7 +532,7 @@ npm run dev
 
 ## 🐛 버그 리포트
 
-버그를 발견하셨나요? [GitHub Issues](https://github.com/ai-naming-standard/v6/issues)에 리포트해주세요!
+버그를 발견하셨나요? [GitHub Issues](https://github.com/ai-naming-standard/mcp/issues)에 리포트해주세요!
 
 **버그 리포트에 포함해주세요:**
 - 버그 설명

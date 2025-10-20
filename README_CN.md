@@ -89,7 +89,7 @@ npm install ai-naming-standard-mcp
 
 ### 从源码安装
 ```bash
-git clone https://github.com/ai-naming-standard/v6.git
+git clone https://github.com/ai-naming-standard/mcp.git
 cd v6
 npm install
 npm link
@@ -529,7 +529,7 @@ my-project/
 
 ### 开发设置
 ```bash
-git clone https://github.com/ai-naming-standard/v6.git
+git clone https://github.com/ai-naming-standard/mcp.git
 cd v6
 npm install
 npm run dev
@@ -539,7 +539,7 @@ npm run dev
 
 ## 🐛 错误报告
 
-发现错误? 请在 [GitHub Issues](https://github.com/ai-naming-standard/v6/issues) 上报告!
+发现错误? 请在 [GitHub Issues](https://github.com/ai-naming-standard/mcp/issues) 上报告!
 
 **请包括:**
 - 错误描述
