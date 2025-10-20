@@ -1,580 +1,295 @@
-﻿# 🚀 AI 命名标准 MCP v6.0.0
+# 🚀 AI 文件命名助手
 
-> **AI 治理时代**: 支持自然语言的革命性多AI协同编排系统
+> **教会AI如何命名文件！**  
+> 然后AI就能更好地理解你的项目并提供有效帮助。
 
 [![npm version](https://img.shields.io/npm/v/ai-naming-standard-mcp.svg?style=flat-square)](https://www.npmjs.com/package/ai-naming-standard-mcp)
 [![npm downloads](https://img.shields.io/npm/dt/ai-naming-standard-mcp.svg?style=flat-square)](https://www.npmjs.com/package/ai-naming-standard-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![MCP Compatible](https://img.shields.io/badge/MCP-v0.6.0-blue.svg?style=flat-square)](https://modelcontextprotocol.io)
-[![Node Version](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen.svg?style=flat-square)](https://nodejs.org)
 
-**AI 命名标准 MCP** 是一个专为多AI协作设计的革命性文件命名和项目结构标准。它使 Cursor、Claude、ChatGPT、Windsurf 等AI工具能够无缝协作,支持自然语言输入、自动依赖跟踪和完整治理。
-
-**🌐 文档**: [English](https://github.com/ai-naming-standard/mcp/tree/main/docs/EN) | [한국어](https://github.com/ai-naming-standard/mcp/tree/main/docs/KR) | [日本語](https://github.com/ai-naming-standard/mcp/tree/main/docs/JP) | [中文](https://github.com/ai-naming-standard/mcp/tree/main/docs/CN)
+**🌐 语言**: [English](./README.md) | [한국어](./README_KO.md) | [日本語](./README_JA.md) | [中文](./README_CN.md)
 
 ---
 
-## 🌟 v6.0.0 核心特性
+## 💡 适合谁使用？
 
-### 🤖 多AI协同编排
-多个AI以定义的角色协作:
-- **Cursor** (代码编写者) - 代码实现
-- **Claude** (审查者) - 代码审查和文档编写
-- **ChatGPT** (架构师) - 结构设计和规则管理
-- **Windsurf** (助手) - 重构和优化
-- **人类** (监督者) - 最终审批和质量控制
-
-### 🧠 命名向导 (自然语言支持)
-自动将自然语言转换为标准文件名:
-
-```javascript
-输入:  "创建登录页面"
-输出: 001_FE_User-Login_C_Page_PROD.jsx
-
-输入:  "添加支付退款API"
-输出: 021_BE_Payment-Refund_C_API_PROD.py
-
-输入:  "创建产品表"
-输出: 005_DB_Product-Schema_C_Migration_PROD.sql
-```
-
-### 🔗 依赖图谱 (@deps 跟踪)
-自动跟踪和管理文件依赖关系:
-
-```javascript
-/* 
- * @file: 003_BE_Order-Process_X_Service_PROD.py
- * @deps:
- *   - 002_BE_Order-Validate_V_Helper_PROD.py
- *   - 005_DB_Order-Schema_C_Migration_PROD.sql
- * @ai: cursor
- * @reviewed: claude
- * @created: 2025-10-17
- */
-```
-
-### 📊 完整治理层
-全面记录所有AI活动和人工干预:
-- **AI_ROLE_MATRIX.yaml** - AI角色和权限
-- **DEP_GRAPH.yaml** - 项目级依赖图
-- **CONVERSATION_HISTORY.json** - AI对话日志
-- **HUMAN_OVERRIDES.md** - 人工干预审计跟踪
-
-### 🏗️ 07_META 文件夹系统
-AI协作的元数据管理:
-
-```
-07_META/
-├── AI_ROLE_MATRIX.yaml           # AI角色矩阵
-├── DEP_GRAPH.yaml                # 依赖图
-├── CONVERSATION_HISTORY.json     # 对话历史
-├── HUMAN_OVERRIDES.md            # 人工覆盖日志
-├── NAMING_WIZARD_RULES.yaml      # 命名规则
-└── PROJECT_METADATA.json         # 项目元数据
-```
+✅ 使用Claude、ChatGPT、Cursor等AI工具的人  
+✅ 文件太多难以管理的人  
+✅ 希望团队统一文件命名规则的人  
+✅ 希望AI更好理解项目的人
 
 ---
 
-## 📦 安装
+## 🎯 我们解决什么问题？
 
-### 全局安装 (推荐)
+### ❌ 之前：混乱的文件名
+
+```
+login.js
+user_page_final_v2.jsx
+payment_fixed.py
+test123.sql
+```
+
+**结果：** AI会混淆并犯错 😵
+
+### ✅ 之后：清晰的文件名
+
+```
+001_FE_User-Login_C_Page_PROD.jsx
+002_BE_Payment-Process_X_API_PROD.py
+003_DB_User-Schema_C_Migration_PROD.sql
+004_TEST_Login_Unit_DEV.test.js
+```
+
+**结果：** AI完全理解并提供更好的帮助！ ✨
+
+---
+
+## 🎁 您能获得什么？
+
+### 1. 🤖 AI理解您的意图
+
+**只需用普通语言说：**
+- "创建登录页面" → AI自动生成：`001_FE_User-Login_C_Page_PROD.jsx`
+- "添加退款API" → AI自动生成：`021_BE_Payment-Refund_C_API_PROD.py`
+- "创建产品表" → AI自动生成：`005_DB_Product-Schema_C_Migration_PROD.sql`
+
+### 2. 📁 8个简单文件夹
+
+项目自动整理：
+
+```
+my-project/
+├── 00_DOCS/      📚 文档
+├── 01_CONFIG/    ⚙️ 配置文件
+├── 02_STATIC/    📦 图片、字体
+├── 03_ACTIVE/    🔥 主要代码
+├── 04_TEST/      🧪 测试
+├── 05_BUILD/     🏗️ 构建文件
+├── 06_LOGS/      📊 日志
+└── 07_META/      🎯 AI协作文件
+```
+
+### 3. 🤝 多个AI协同工作
+
+- **Claude** 编写代码
+- **Cursor** 审查
+- **ChatGPT** 设计结构
+- **所有AI都理解相同规则！**
+
+### 4. 📝 自动记录管理
+
+一切自动记录：
+- 谁做了什么
+- 什么时候做的
+- 哪些文件相互关联
+
+---
+
+## ⚡ 快速开始（3分钟）
+
+### 步骤1：安装
+
 ```bash
 npm install -g ai-naming-standard-mcp
 ```
 
-### 本地安装
-```bash
-npm install ai-naming-standard-mcp
-```
+### 步骤2：告诉您的AI
 
-### 从源码安装
-```bash
-git clone https://github.com/ai-naming-standard/mcp.git
-cd v6
-npm install
-npm link
-```
-
----
-
-## 🔧 配置
-
-### Claude Desktop
-编辑 `claude_desktop_config.json`:
+只需复制到Claude或Cursor设置中：
 
 ```json
 {
   "mcpServers": {
     "ai-naming-standard": {
       "command": "node",
-      "args": ["/path/to/ai-naming-standard-mcp/src/index.js"]
+      "args": ["path/to/ai-naming-standard-mcp/src/index.js"]
     }
   }
 }
 ```
 
-**配置文件位置:**
-- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Linux**: `~/.config/Claude/claude_desktop_config.json`
+### 步骤3：开始使用！
 
-### Cursor
-在项目根目录创建 `.cursorrules` 文件:
+用普通语言告诉AI：
+- "创建用户仪表板页面"
+- "添加邮箱验证API"
+- "创建产品数据库表"
 
-```
-# AI 命名标准 v6.0.0
-所有文件使用 AI 命名约定 v6.0.0
-检查 07_META/AI_ROLE_MATRIX.yaml 了解您的角色和权限
-始终在文件头添加 @deps 标签
-遵循标准文件夹结构: 00_DOCS 到 07_META
-```
-
-### VS Code (MCP 扩展)
-添加到 `.vscode/settings.json`:
-
-```json
-{
-  "mcp.servers": {
-    "ai-naming-standard": {
-      "command": "node",
-      "args": ["/path/to/ai-naming-standard-mcp/src/index.js"]
-    }
-  }
-}
-```
+**就这样！** 🎉
 
 ---
 
-## 🛠️ MCP 工具 (共24个)
+## 📖 实际使用示例
 
-### 🎯 核心命名工具 (8个)
-| 工具 | 描述 |
-|------|-------------|
-| `generateFileName` | 生成标准文件名 |
-| `validateFileName` | 验证文件名格式 |
-| `explainFileName` | 解释文件名组成 |
-| `getLayerCodes` | 获取层代码表 |
-| `getActionCodes` | 获取操作代码表 |
-| `getProjectTemplate` | 获取项目模板 |
-| `batchGenerateFileNames` | 批量生成文件名 |
-| `suggestCorrection` | 建议无效名称的修正 |
+### 示例1：构建购物网站
 
-### 🏗️ 项目结构工具 (6个)
-| 工具 | 描述 |
-|------|-------------|
-| `createProjectStructure` | 创建 v6 8文件夹结构 |
-| `checkFolderPermission` | 检查文件夹权限 |
-| `migrateFromV4` | 从 v4/v5 迁移到 v6 |
-| `suggestFolder` | 建议合适的文件夹 |
-| `handleExternalFile` | 处理外部文件 |
-| `generateDependencyManifest` | 生成依赖清单 |
+**您说：** "需要购物车页面"
 
-### 🆕 多AI编排工具 (2个)
-| 工具 | 描述 |
-|------|-------------|
-| `createAIRoleMatrix` | 创建 AI 角色矩阵 |
-| `getAIRole` | 获取 AI 角色和权限 |
+**AI创建：**
+```
+015_FE_Cart-Shopping_R_Page_PROD.jsx
+```
 
-### 🆕 命名向导工具 (2个)
-| 工具 | 描述 |
-|------|-------------|
-| `naturalLanguageToFileName` | 将自然语言转换为文件名 |
-| `addNamingWizardRule` | 添加自定义命名规则 |
+**一眼就能看懂：**
+- `015` - 文件编号（便于查找）
+- `FE` - 前端（网页）
+- `Cart-Shopping` - 购物车功能
+- `R` - Read/显示（显示信息）
+- `Page` - 页面
+- `PROD` - 生产环境（实际网站）
 
-### 🆕 依赖图工具 (3个)
-| 工具 | 描述 |
-|------|-------------|
-| `generateDepGraph` | 生成依赖图 |
-| `validateDeps` | 验证 @deps 标签 |
-| `checkCircularDeps` | 检查循环依赖 |
+### 示例2：团队协作
 
-### 🆕 治理和审计工具 (3个)
-| 工具 | 描述 |
-|------|-------------|
-| `logHumanOverride` | 记录人工干预 |
-| `scanProject` | 扫描项目结构 |
-| `exportConfig` | 为AI工具导出配置 |
+**之前：**
+- 小明：`login_page.jsx`
+- 小红：`LoginPage.jsx`
+- 小刚：`user-login-component.jsx`
+- 😵 大家都混乱！
+
+**之后：**
+- 所有人：`001_FE_User-Login_C_Page_PROD.jsx`
+- ✨ 完美一致！
 
 ---
 
-## 💡 使用示例
+## 🌍 支持4种语言
 
-### 1. 自然语言转文件名
+所有功能都支持您的语言：
 
-```javascript
-// 在 Claude/Cursor 中执行
-{
-  "tool": "naturalLanguageToFileName",
-  "args": {
-    "naturalLanguage": "更新用户资料API",
-    "language": "zh"
-  }
-}
-
-// 结果
-{
-  "fileName": "015_BE_User-Profile_U_API_PROD.py",
-  "analysis": {
-    "domain": "User-Profile",
-    "action": "U",
-    "layer": "BE",
-    "detail": "API",
-    "env": "PROD"
-  },
-  "confidence": "high"
-}
-```
-
-### 2. 检查 AI 角色和权限
-
-```javascript
-{
-  "tool": "getAIRole",
-  "args": { "aiName": "cursor" }
-}
-
-// 结果
-{
-  "aiName": "cursor",
-  "type": "code_writer",
-  "permissions": ["write: 03_ACTIVE", "test: 04_TEST"],
-  "canModify": ["03_ACTIVE", "04_TEST"],
-  "cannotModify": ["01_CONFIG", "07_META"],
-  "responsibilities": ["代码编写", "测试生成", "错误修复"]
-}
-```
-
-### 3. 创建项目结构
-
-```javascript
-{
-  "tool": "createProjectStructure",
-  "args": {
-    "projectName": "my-ecommerce-app",
-    "version": "v6"
-  }
-}
-
-// 创建文件夹:
-// 00_DOCS/     - 文档
-// 01_CONFIG/   - 配置 (AI 禁止修改)
-// 02_STATIC/   - 静态资源
-// 03_ACTIVE/   - 活动代码 (主工作区)
-// 04_TEST/     - 测试
-// 05_BUILD/    - 构建输出
-// 06_LOGS/     - 日志
-// 07_META/     - AI 协作元数据
-```
-
-### 4. 生成依赖图
-
-```javascript
-{
-  "tool": "generateDepGraph",
-  "args": {
-    "sourcePath": ".",
-    "outputPath": "07_META/DEP_GRAPH.yaml"
-  }
-}
-
-// 扫描 03_ACTIVE 文件夹中的所有文件,
-// 提取 @deps 标签, 并生成 DEP_GRAPH.yaml
-```
-
-### 5. 验证文件名
-
-```javascript
-{
-  "tool": "validateFileName",
-  "args": {
-    "fileName": "001_BE_User-Login_C_Service_PROD.py"
-  }
-}
-
-// 结果
-{
-  "valid": true,
-  "components": {
-    "index": "001",
-    "layer": "BE",
-    "domain": "User-Login",
-    "action": "C",
-    "detail": "Service",
-    "env": "PROD",
-    "ext": "py"
-  }
-}
-```
+| 语言 | 状态 | 文档 |
+|----------|--------|---------------|
+| English | ✅ 完全支持 | [Docs](https://github.com/ai-naming-standard/mcp/tree/main/docs/EN) |
+| 한국어 (Korean) | ✅ 完全支持 | [문서](https://github.com/ai-naming-standard/mcp/tree/main/docs/KR) |
+| 日本語 (Japanese) | ✅ 完全支持 | [ドキュメント](https://github.com/ai-naming-standard/mcp/tree/main/docs/JP) |
+| 中文 (Chinese) | ✅ 完全支持 | [文档](https://github.com/ai-naming-standard/mcp/tree/main/docs/CN) |
 
 ---
 
-## 📂 v6 文件夹结构
+## 🎓 文件名是如何生成的？
+
+别担心 - 您不需要记住这些！  
+**只需告诉AI您想要什么，AI会创建正确的名称。**
+
+但如果您好奇，它是这样工作的：
 
 ```
-my-project/
-├── 00_DOCS/                    # 📚 文档
-│   ├── README.md
-│   ├── API_SPEC.md
-│   └── ARCHITECTURE.md
-│
-├── 01_CONFIG/                  # ⚙️ 配置 (AI 禁止修改)
-│   ├── .env
-│   ├── config.yaml
-│   └── secrets.json
-│
-├── 02_STATIC/                  # 📦 静态资源
-│   ├── ASSET_logo.png
-│   ├── TEMPLATE_email.html
-│   └── EXTERNAL_bootstrap.css
-│
-├── 03_ACTIVE/                  # 🔥 活动代码 (主工作区)
-│   ├── 001_BE_User-Login_C_Service_PROD.py
-│   ├── 002_FE_Dashboard_R_Page_PROD.jsx
-│   └── 003_DB_User-Schema_C_Migration_PROD.sql
-│
-├── 04_TEST/                    # 🧪 测试代码
-│   ├── 001_TEST_User-Login_Unit_DEV.test.py
-│   └── 002_TEST_Dashboard_E2E_DEV.test.js
-│
-├── 05_BUILD/                   # 🏗️ 构建输出
-│   ├── dist/
-│   └── bundle.js
-│
-├── 06_LOGS/                    # 📊 日志文件
-│   ├── app.log
-│   └── error.log
-│
-└── 07_META/                    # 🆕 AI 协作元数据
-    ├── AI_ROLE_MATRIX.yaml
-    ├── DEP_GRAPH.yaml
-    ├── CONVERSATION_HISTORY.json
-    ├── HUMAN_OVERRIDES.md
-    ├── NAMING_WIZARD_RULES.yaml
-    └── PROJECT_METADATA.json
+[编号]_[位置]_[什么]-[详情]_[动作]_[类型]_[环境]
 ```
 
----
+**示例：**
 
-## 🎯 文件命名模式
+| 文件名 | 含义 |
+|-----------|---------|
+| `001_FE_User-Login_C_Page_PROD.jsx` | 前端登录页面（创建） |
+| `002_BE_Payment-Process_X_Service_PROD.py` | 后端支付服务（执行） |
+| `003_DB_Order-Schema_C_Migration_PROD.sql` | 数据库订单表（创建） |
 
-### 基本模式
-```
-[索引]_[层]_[域]-[功能]_[操作]_[细节]_[环境].[扩展名]
-```
+**位置（Layer）：**
+- `FE` = 前端（用户看到的）
+- `BE` = 后端（服务器逻辑）
+- `DB` = 数据库（数据存储）
+- `API` = API（连接）
 
-### 实际示例
-
-| 文件名 | 描述 |
-|-----------|-------------|
-| `001_FE_User-Login_C_Page_PROD.jsx` | 用户登录页面 |
-| `002_BE_Payment-Process_X_Service_PROD.py` | 支付处理服务 |
-| `003_DB_Order-Schema_C_Migration_PROD.sql` | 订单表迁移 |
-| `004_API_Auth-Token_V_Middleware_PROD.js` | 令牌验证中间件 |
-| `005_ML_Recommend-Product_G_Model_PROD.py` | 产品推荐模型 |
-
-### 层代码
-
-| 代码 | 描述 | 用例 |
-|------|-------------|----------|
-| `FE` | 前端 | React, Vue, Angular |
-| `BE` | 后端 | Node.js, Python, Java |
-| `DB` | 数据库 | MySQL, PostgreSQL, MongoDB |
-| `API` | API 网关 | REST, GraphQL, gRPC |
-| `ML` | 机器学习 | TensorFlow, PyTorch |
-| `INFRA` | 基础设施 | Docker, Kubernetes |
-| `SH` | 共享/通用 | 工具, 辅助函数 |
-
-### 操作代码
-
-| 代码 | 含义 | 描述 |
-|------|---------|-------------|
-| `C` | 创建 | 创建新资源 |
-| `R` | 读取 | 获取/读取数据 |
-| `U` | 更新 | 修改/更新数据 |
-| `D` | 删除 | 删除资源 |
-| `V` | 验证 | 验证数据 |
-| `X` | 执行 | 执行/处理 |
-| `S` | 发送 | 发送/传输 |
-| `T` | 转换 | 转换/转化 |
-| `G` | 生成 | 生成/产生 |
-
-### 环境标签
-
-| 标签 | 环境 | 用途 |
-|-----|-------------|---------|
-| `DEV` | 开发环境 | 本地开发 |
-| `STG` | 预发布环境 | 预发布环境 |
-| `PROD` | 生产环境 | 生产环境 |
-| `COMMON` | 通用 | 所有环境 |
+**动作：**
+- `C` = Create（创建新的）
+- `R` = Read（显示）
+- `U` = Update（更新）
+- `D` = Delete（删除）
+- `X` = Execute（执行处理）
 
 ---
 
-## 📈 性能对比
+## 💬 需要帮助？
 
-| 指标 | v5.0.2 | v6.0.0 | 改进 |
-|--------|--------|--------|-------------|
-| **MCP 工具** | 12 | 24 | +100% ⬆️ |
-| **文件夹** | 7 | 8 | +14% ⬆️ |
-| **AI 支持** | 单一 | 多AI | +400% ⬆️ |
-| **自然语言** | ❌ | ✅ 命名向导 | +100% 🆕 |
-| **依赖跟踪** | 手动 | 自动 (@deps) | +100% ⬆️ |
-| **治理** | 部分 | 完整 | +80% ⬆️ |
-| **审计跟踪** | ❌ | ✅ 完整 | +100% 🆕 |
-| **可访问性** | 95% | 100% | +5% ⬆️ |
-
----
-
-## 🔄 迁移指南
-
-### v5 → v6 自动迁移
-
-```javascript
-{
-  "tool": "migrateFromV4",
-  "args": {
-    "sourcePath": ".",
-    "sourceVersion": "v5",
-    "dryRun": false
-  }
-}
-```
-
-### 手动迁移步骤
-
-1. **创建 07_META 文件夹**
-   ```bash
-   mkdir 07_META
-   ```
-
-2. **创建 AI_ROLE_MATRIX.yaml**
-   ```javascript
-   {
-     "tool": "createAIRoleMatrix",
-     "args": {
-       "projectName": "my-project",
-       "aiTools": ["cursor", "claude", "chatgpt"]
-     }
-   }
-   ```
-
-3. **添加 @deps 标签到文件**
-   ```javascript
-   /* 
-    * @file: filename.ext
-    * @deps:
-    *   - dependency1.ext
-    *   - dependency2.ext
-    * @ai: cursor
-    */
-   ```
-
-4. **生成依赖图**
-   ```javascript
-   {
-     "tool": "generateDepGraph",
-     "args": {
-       "sourcePath": ".",
-       "outputPath": "07_META/DEP_GRAPH.yaml"
-     }
-   }
-   ```
-
----
-
-## 🌐 国际化
-
-**所有语言完全支持!** 🌍
-
-| 语言 | 状态 | 命名向导 | 文档 |
-|----------|--------|---------------|---------------|
-| English | ✅ 完整 | ✅ 支持 | ✅ 完成 |
-| 한국어 (韩语) | ✅ 完整 | ✅ 支持 | ✅ 完成 |
-| 日本語 (日语) | ✅ 完整 | ✅ 支持 | ✅ 完成 |
-| 中文 (中文) | ✅ 完整 | ✅ 支持 | ✅ 完成 |
-
-**文档链接:**
-- 📖 [English Documentation](https://github.com/ai-naming-standard/mcp/tree/main/docs/EN)
-- 📖 [한국어 문서](https://github.com/ai-naming-standard/mcp/tree/main/docs/KR)
-- 📖 [日本語ドキュメント](https://github.com/ai-naming-standard/mcp/tree/main/docs/JP)
-- 📖 [中文文档](https://github.com/ai-naming-standard/mcp/tree/main/docs/CN)
-
----
-
-## 📚 文档
-
-### 核心文档
-- [📖 完整文档](./AI-NAMING-STANDARD/EN/v6.0.0/AI_NAMING_CONVENTION_v6.md) - 完整文档 (第0-6部分)
-- [📖 续篇](./AI-NAMING-STANDARD/EN/v6.0.0/AI_NAMING_CONVENTION_v6_CONTINUATION.md) - 续篇 (第7-13部分)
-- [📋 更新日志](./AI-NAMING-STANDARD/EN/v6.0.0/CHANGELOG_v6.md) - 版本历史
-- [🚀 快速开始](./AI-NAMING-STANDARD/EN/v6.0.0/README.md) - 入门指南
-- [📑 索引](./AI-NAMING-STANDARD/EN/v6.0.0/INDEX.md) - 文档索引
-
-### 元模板
-- [AI_ROLE_MATRIX.yaml](./AI-NAMING-STANDARD/EN/v6.0.0/05-meta-templates/AI_ROLE_MATRIX.yaml)
-- [NAMING_WIZARD_RULES.yaml](./AI-NAMING-STANDARD/EN/v6.0.0/05-meta-templates/NAMING_WIZARD_RULES.yaml)
-- [DEP_GRAPH.yaml](./AI-NAMING-STANDARD/EN/v6.0.0/05-meta-templates/DEP_GRAPH.yaml)
-
----
-
-## 🤝 贡献
-
-欢迎错误报告、功能请求和拉取请求!
-
-### 如何贡献
-1. Fork 仓库
-2. 创建您的功能分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交您的更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 打开拉取请求
-
-### 开发设置
-```bash
-git clone https://github.com/ai-naming-standard/mcp.git
-cd v6
-npm install
-npm run dev
-```
-
----
-
-## 🐛 错误报告
-
-发现错误? 请在 [GitHub Issues](https://github.com/ai-naming-standard/mcp/issues) 上报告!
-
-**请包括:**
-- 错误描述
-- 重现步骤
-- 预期行为
-- 实际行为
-- 截图 (如果适用)
-- 环境信息 (操作系统、Node版本等)
-
----
-
-## 💬 联系方式
-
-### 需要帮助?
 📧 **电子邮件**: [omskykhal@gmail.com](mailto:omskykhal@gmail.com)
+
+---
+
+## 🤝 想要贡献？
+
+我们欢迎：
+- 错误报告
+- 功能建议
+- 翻译
+- 文档改进
+
+**如何贡献：**
+
+1. 访问GitHub：[https://github.com/ai-naming-standard/mcp](https://github.com/ai-naming-standard/mcp)
+2. 提交Issue或Pull Request
+3. 我们会快速审查和回复！
 
 ---
 
 ## 📜 许可证
 
-MIT 许可证 - 免费使用!
+MIT许可证 - 所有人免费使用！
 
 ```
-MIT License
+Copyright (c) 2025 AI Naming Standard
 
-Copyright (c) 2025 AI Naming Standard Organization
-
-特此免费授予任何获得本软件及相关文档文件（"软件"）副本的人
-不受限制地处理本软件的权利，包括但不限于使用、复制、修改、
-合并、发布、分发、再许可和/或销售本软件副本的权利，
-并允许向其提供本软件的人这样做，但须符合以下条件：
-
-上述版权声明和本许可声明应包含在本软件的所有副本或重要部分中。
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software.
 ```
 
 ---
 
----`n`n
+## 🎯 核心优势
+
+✨ **节省时间**：不再需要思考文件名  
+✨ **减少混乱**：每个人使用相同的系统  
+✨ **更好的AI帮助**：AI理解您的项目结构  
+✨ **轻松协作**：对每个人都有清晰的规则  
+✨ **专业性**：您的项目看起来有组织且整洁
+
+---
+
+## 📦 技术细节（开发者专用）
+
+<details>
+<summary>点击查看技术信息</summary>
+
+### MCP协议
+
+- 兼容MCP v0.6.0
+- 24个内置文件管理工具
+- 支持多AI协同
+- 自动依赖跟踪
+
+### 系统要求
+
+- Node.js >= 16.0.0
+- npm或yarn
+- 兼容Claude Desktop、Cursor、VS Code
+
+### 高级功能
+
+- 自定义命名规则
+- 从v4/v5迁移
+- 依赖图生成
+- AI角色矩阵管理
+- 对话历史跟踪
+
+详细技术文档：[技术文档](./AI-NAMING-STANDARD/CN/v6.0.0/)
+
+</details>
+
+---
+
+<div align="center">
+
+**版本**: 6.0.13  
+**状态**: 生产就绪 ✅
+
+为AI社区精心制作 💙
+
+[NPM包](https://www.npmjs.com/package/ai-naming-standard-mcp) • 
+[GitHub](https://github.com/ai-naming-standard/mcp) • 
+[文档](./AI-NAMING-STANDARD/CN/v6.0.0/)
+
+</div>
