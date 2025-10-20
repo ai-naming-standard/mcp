@@ -468,17 +468,3 @@ export async function exportConfig({ targetTool, outputPath }) {
     description: `Would export ${config.format} configuration for ${targetTool}`
   };
 }
-
-// Export all v6 tools
-export {
-  createAIRoleMatrix,
-  getAIRole,
-  naturalLanguageToFileName,
-  addNamingWizardRule,
-  generateDepGraph,
-  validateDeps,
-  checkCircularDeps,
-  logHumanOverride,
-  scanProject,
-  exportConfig
-};
