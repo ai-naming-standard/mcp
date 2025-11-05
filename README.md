@@ -3,6 +3,10 @@
 > **Teach AI how to name your files!**  
 > Then AI will understand your project better and help you more effectively.
 
+<a href="https://glama.ai/mcp/servers/@ai-naming-standard/mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@ai-naming-standard/mcp/badge" alt="AI Naming Standard Server MCP server" />
+</a>
+
 [![npm version](https://img.shields.io/npm/v/ai-naming-standard-mcp.svg?style=flat-square)](https://www.npmjs.com/package/ai-naming-standard-mcp)
 [![npm downloads](https://img.shields.io/npm/dt/ai-naming-standard-mcp.svg?style=flat-square)](https://www.npmjs.com/package/ai-naming-standard-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
